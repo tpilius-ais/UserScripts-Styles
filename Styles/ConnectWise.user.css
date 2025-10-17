@@ -1,0 +1,190 @@
+/* ==UserStyle==
+@name           ConnectWise Tweaks
+@namespace      tpilius-ais
+@author         tpilius-ais
+@version        0.1.0
+@description    Overhauls the interface design of ConnectWise to improve visual clarity and usability.
+==/UserStyle== */
+
+/* TODO document */
+/* TODO write matching readme documentation */
+/* TODO Play around with conditionally enabling + disabling parts of this.
+         https://stylus-lang.com/docs/conditionals.html
+         https://github.com/openstyles/stylus/wiki/Writing-UserCSS#var */
+
+@-moz-document url-prefix("https://na.myconnectwise.net/v2025_1")
+{
+
+    /* Adds some more padding to the bottom toolbar */
+    .mm_toolbarHolder
+    {
+        padding-bottom: 6px !important;
+    }
+
+    /* Colorizes the buttons on the bottom bar */
+    .cw-toolbar-search,
+    .cw-toolbar-clear,
+    .cw-toolbar-export,
+    .cw-toolbar-view,
+    .cw_buttonSaveAndNew,
+    .cw_buttonCancel
+    {
+        background: #026ccf;
+        border-radius: 4px !important;
+    }
+
+    .cw-toolbar-search div,
+    .cw-toolbar-clear div,
+    .cw-toolbar-export div,
+    .cw-toolbar-view div,
+    .cw_buttonSaveAndNew div,
+    .cw_buttonCancel div
+    {
+        color: white !important;
+    }
+
+    .cw-toolbar-search div:hover,
+    .cw-toolbar-clear div:hover,
+    .cw-toolbar-export div:hover,
+    .cw-toolbar-view div:hover,
+    .cw_buttonSaveAndNew div:hover,
+    .cw_buttonCancel div:hover
+    {
+        background: #01407b !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Hiding print button on bottom toolbar */
+    .cw_PsaPrintMenuButton
+    {
+        display: none !important;
+    }
+
+    .cw-toolbar-clear
+    {
+        left: 96px !important;
+    }
+
+    /* Hides print from top toolbar */
+    .cw_Print
+    {
+        display: none;
+    }
+}
+
+/* TODO the two column layout on the ticket to make the left hand side smaller and right larger. */
+@-moz-document regexp("https://na.myconnectwise.net/v2025_1/connectwise.aspx(?:.*)startscreen=sr150(\\S*)"),
+regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicket)"),
+regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ActivityDetail)"),
+regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
+{
+
+    /* Hiding toolbar buttons that aren't really helpful */
+    .cw_ToolbarButton_Dispatch,
+    .cw_ToolbarButton_Time,
+    .cw_ToolbarButton_New
+    {
+        display: none !important;
+    }
+
+    /* Reduces top padding on Initial Description pod */
+    .CwPod-headerText div
+    {
+        padding-top: 0px !important;
+    }
+
+    div[data-cwid="pod_service_ticket_inital_note"] .CwPod-header
+    {
+        padding-bottom: 0px !important;
+        text-decoration: underline !important;
+    }
+
+    .CwPodCol-podColWithoutSectionHeader div
+    {
+        margin-top: 0px !important;
+    }
+
+    /* Removes some of the padding from the new Note button, and gives it some color */
+    .TicketNote-newNoteButton
+    {
+        background: #026ccf;
+        padding-top: 0px !important;
+        margin-left: 10px;
+        border-radius: 8px !important;
+    }
+
+    .TicketNote-newNoteButton div
+    {
+        fill: white !important;
+        color: white !important;
+    }
+
+    /* Gives the pod header a color to make the content more visually distinct from the header */
+    .mm_podHeader
+    {
+        background-color: #d9d9d9;
+    }
+
+    /* Vertically centers collapse chevron */
+    .mm_podHeader .x-panel-toolbar
+    {
+        margin-top: -3px;
+    }
+
+    /* Colorizes buttons on toolbar */
+    .cw_ToolbarButton_Expense
+    {
+        filter: invert(48%) sepia(79%) saturate(1800%) hue-rotate(86deg) brightness(85%) contrast(125%);
+    }
+
+    /* Removes ugly VIP banner */
+    div[style*="height: 46px"][style*="overflow: hidden"][style*="left: 0px"][style*="top: 0px"]:has(.cw_BaseBannerFilterViewImpl)
+    {
+        display: none !important;
+    }
+
+    div[style*="position: absolute"][style*="overflow: hidden"][style*="inset: 46px 0px 0px"]
+    {
+        inset: 0px !important;
+    }
+
+    /* Colors dropdown statuses that must be changed. */
+    input[value="Requires Attention"],
+    input[value="TICKET UPDATE REQUIRED"],
+    input[value="MUST CHANGE"],
+    div.GMDB3DUBGRG.GMDB3DUBGSG.GMDB3DUBKTG:has(img[style*="R0lGODlhEAAQAJECAHBDWvSrvP"])
+    {
+        background-color: lightcoral;
+    }
+
+    input[value="Scheduled"]
+    {
+        background-color: lightyellow;
+    }
+
+    /* Shrinks the left hand column since it is way too large, and expanding the right hand column */
+    .GMDB3DUBPJH.ServiceTicket.cw_PsaRootContainer
+    {
+        container-name: column-container;
+        container-type: inline-size;
+    }
+
+    @container column-container (min-width: 1px)
+    {
+        .GMDB3DUBFJH.mm_portletSpacing
+        {
+            width: initial !important;
+        }
+
+        /* TODO these class selectors are horrific */
+        .GMDB3DUBFJH.mm_portletSpacing tbody tr:first-of-type td:first-of-type > table:first-of-type
+        {
+            width: 570px !important;
+        }
+
+        .GMDB3DUBFJH.mm_portletSpacing tbody tr:first-of-type td:nth-of-type(2) > table:first-of-type
+        {
+            width: calc(97cqw - 570px) !important;
+        }
+    }
+}

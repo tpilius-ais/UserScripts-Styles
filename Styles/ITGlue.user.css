@@ -1,0 +1,132 @@
+/* ==UserStyle==
+@name           IT Glue Tweaks
+@namespace      tpilius-ais
+@author         tpilius-ais
+@version        0.0.1
+@description    TODO
+==/UserStyle== */
+
+/* TODO write matching readme documentation */
+/* TODO Play around with conditionally enabling + disabling parts of this.
+         https://stylus-lang.com/docs/conditionals.html
+         https://github.com/openstyles/stylus/wiki/Writing-UserCSS#var
+
+/* #region General - Applies to all pages */
+@-moz-document domain("ainfosys.itglue.com")
+{
+
+    /* Shrinks the right hand sidebar since its a bit too wide by default */
+    body.react-app-doc-editor .sidebar
+    {
+        width: 350px !important;
+    }
+
+    /* Makes the right hand section be a light shade of grey to make it easier to differentiate */
+    body.react-app-doc-editor .sidebar .publish-section,
+    #react-main .sidebar .sidebar-section,
+    .sidebar
+    {
+        background-color: #d9d9d9 !important;
+    }
+
+    /* Fixes floating horizontal scroll bar at the bottom of the screen */
+    .table-secondary-scroll-wrapper
+    {
+        bottom: 0px !important;
+    }
+
+    /* Hides guides icon to the left of search, as well as Kaseya button */
+    .walkme-to-remove.walkme-launcher-container,
+    .kaseya-ui-k1-button
+    {
+        display: none !important;
+    }
+}
+
+/* #endregion */
+
+/* Document list view only.  Does not apply to viewing the documents themselves. */
+/* TODO look at adding these icons as replacements to the built in ones : https://github.com/dderevjanik/vscode-icons-js-example/tree/master/docs/icons */
+@-moz-document regexp("^.*(itglue).*(documents).*")
+{
+
+    /* Makes the "X documents" label be on the same line as the folder rather than underneath it */
+    .doc-name-group.qa-doc-name-group
+    {
+        flex-direction: row !important;
+    }
+
+    /* Centers the text vertically */
+    .doc-name-group .subtext
+    {
+        line-height: 24px;
+    }
+
+    /* Hides the useless edit + copy icons that show up when you hover near an item */
+    .doc-icon-group
+    {
+        display: none !important;
+    }
+}
+
+/* #region Apps & Services */
+@-moz-document regexp("^.*(itglue).*(assets).*")
+{
+
+    /* Modifications for anything under Apps & Services */
+    dl
+    {
+        max-width: 500px;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 20px 24px;
+        font-family: "Segoe UI", Roboto, sans-serif;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    h3.render-header
+    {
+        font-size: 28px;
+        font-weight: 500;
+        color: #0a4a8b;
+        border-bottom: 2px solid #e5e5e5;
+        padding-bottom: 6px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    dt.render-label
+    {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 5px !important;
+    }
+
+    dd p
+    {
+        margin: 0;
+    }
+
+    .render-generic,
+    .render-text
+    {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 6px 10px;
+    }
+
+    .footer
+    {
+        border-top: 1px solid #e5e5e5;
+    }
+
+    .resource-access a
+    {
+        color: #0078d4;
+        text-decoration: none;
+    }
+}
+
+/* #endregion */

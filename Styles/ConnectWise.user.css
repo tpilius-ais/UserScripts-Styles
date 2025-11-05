@@ -2,7 +2,7 @@
 @name           ConnectWise Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.1.0
+@version        0.2.0
 @description    Overhauls the interface design of ConnectWise to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -54,25 +54,25 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
-    /* Hiding print button on bottom toolbar */
-    .cw_PsaPrintMenuButton
+    /* Hiding print button on various toolbars */
+    .cw_PsaPrintMenuButton,
+    .cw-toolbar-print,
+    .cw_Print
     {
         display: none !important;
     }
+}
 
-    .cw-toolbar-clear
-    {
-        left: 96px !important;
-    }
+@-moz-document url-prefix("https://na.myconnectwise.net/v2025_1/timeexpensemodule.html")
+{
 
-    /* Hides print from top toolbar */
-    .cw_Print
+    /* Colors dropdown statuses that must be changed. */
+    input[value="MUST CHANGE"]
     {
-        display: none;
+        background-color: lightcoral;
     }
 }
 
-/* TODO the two column layout on the ticket to make the left hand side smaller and right larger. */
 @-moz-document regexp("https://na.myconnectwise.net/v2025_1/connectwise.aspx(?:.*)startscreen=sr150(\\S*)"),
 regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicket)"),
 regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ActivityDetail)"),

@@ -76,6 +76,19 @@
     {
         display: none !important;
     }
+
+    /* TODO see if I can fix the spacing on the scheduling widget */
+    /* .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(4),
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(5),
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(6),
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="3"],
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="4"],
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="5"]
+    {
+
+        display: none !important;
+    } */
+
 }
 
 /* Note/Time popup  */
@@ -186,6 +199,8 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
     input[value="MUST CHANGE"],
     div.mm_comboBox:has(input.cw_subType[value=""]),
     div.mm_comboBox:has(input.cw_item[value=""]),
+    /* TODO I think this is just for me */
+    .cw_reminderMinutes[value="30 minutes"],
     div.GMDB3DUBGRG.GMDB3DUBGSG.GMDB3DUBKTG:has(img[style*="R0lGODlhEAAQAJECAHBDWvSrvP"])
     {
         background-color: lightcoral;

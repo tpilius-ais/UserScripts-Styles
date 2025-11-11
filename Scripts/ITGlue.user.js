@@ -89,3 +89,16 @@ function UpdateLogic()
 // Will try to update the title any time that it is changed on page navigation
 const observer = new MutationObserver(UpdateLogic);
 observer.observe(document.querySelector('title'), { childList: true });
+
+//TODO play around with this
+// document.querySelectorAll('.doc-name i.item-name-icon').forEach(icon => {
+//     const img = document.createElement('img');
+//     img.src = 'https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/24x24/folder.png';
+//     img.alt = 'Folder';
+//     img.style.verticalAlign = 'middle';
+//     img.style.marginRight = '6px';
+
+//     // Insert the new image before removing the old icon
+//     icon.parentNode.insertBefore(img, icon);
+//     icon.remove();
+// });

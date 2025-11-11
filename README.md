@@ -1,4 +1,5 @@
 <!-- TODO Document features, with pictures. -->
+<!-- TODO add eslint -->
 ## Installation
 
 You're going to need the [Stylus](https://addons.mozilla.org/en-US/firefox/addon/styl-us/) and [Violentmonkey](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) browser extensions in order to use these scripts.  Once the extensions are installed individual scripts/styles can be installed via clicking the associated install button below.

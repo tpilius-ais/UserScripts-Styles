@@ -54,7 +54,7 @@ function CreateCopyTeamsLinkButton()
         return;
     }
 
-    let pageHeaderContainer = document.querySelector(".react-page-header__left");
+    const pageHeaderContainer = document.querySelector(".react-page-header__left");
     if (!pageHeaderContainer)
     {
         // Nothing to do since we couldn't find the header
@@ -62,7 +62,7 @@ function CreateCopyTeamsLinkButton()
     }
 
     // Remove the old button and readd it.  This is so that it will always be to the right of the edit button.
-    let existingButton = pageHeaderContainer.querySelector('button.teams-button');
+    const existingButton = pageHeaderContainer.querySelector('button.teams-button');
     if (existingButton !== null)
     {
         existingButton.remove();
@@ -97,14 +97,14 @@ function CreateCopyTeamsLinkButton_Passwords()
         return;
     }
 
-    let sidebarButtonsContainer = document.querySelector(".sidebar-buttons-section .buttons");
+    const sidebarButtonsContainer = document.querySelector(".sidebar-buttons-section .buttons");
     if (!sidebarButtonsContainer)
     {
         return;
     }
 
     // Remove the old button and readd it.  This is so that it will always be to the right of the edit button.
-    let existingButton = sidebarButtonsContainer.querySelector('button.teams-button');
+    const existingButton = sidebarButtonsContainer.querySelector('button.teams-button');
     if (existingButton !== null)
     {
         existingButton.remove();
@@ -136,7 +136,10 @@ function CreateCopyTeamsLinkButton_Passwords()
 function GetFormattedOrgName()
 {
     const orgMap = {
+        5199378: "Acorn",
+        5198948: "AFP",
         5185248: "AIS",
+        5198950: "BI",
         5524967: "CCA",
         5198997: "Engel Law",
         6038230: "FFCU",
@@ -144,7 +147,7 @@ function GetFormattedOrgName()
         5199266: "Ingerman",
         5198977: "Naiman",
         5199276: "PK Law",
-        5870388: "SBWDlaw",
+        5870388: "SBWD",
         5199304: "Waranch",
         5198991: "WEA"
     };

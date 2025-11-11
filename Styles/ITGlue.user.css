@@ -83,23 +83,30 @@
         border-radius: 4px;
         font-size: 13px;
         font-weight: 500;
+
+        &:hover
+        {
+            background-color: #464775;
+        }
+
+        /* Makes the button appear to be pushed inwards when clicking it */
+        &:active
+        {
+            transform: scale(0.95);
+        }
+
+        /* Resizes icon */
+        & img
+        {
+            width: 16px;
+            height: 16px;
+        }
     }
 
-    .teams-button:hover
+    /* Hides password strength box */
+    .smart-assist-widget-node__password-strength
     {
-        background-color: #464775;
-    }
-
-    /* Makes the button appear to be pushed inwards when clicking it */
-    .teams-button:active
-    {
-        transform: scale(0.95);
-    }
-
-    .teams-button img
-    {
-        width: 16px;
-        height: 16px;
+        display: none !important;
     }
 }
 
@@ -125,6 +132,13 @@
     {
         margin-top: 20px;
     }
+
+    /* TODO make this larger again. */
+    /* h3,
+    h4
+    {
+        font-size: 18px !important;
+    } */
 
 }
 

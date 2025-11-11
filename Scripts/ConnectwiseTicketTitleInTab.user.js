@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         ConnectWise - Ticket Description in Title
+// @author       tpilius-ais
 // @version      0.0.2
 // @description  TODO
-// @author       Tim Pilius
 // @match        https://na.myconnectwise.net/*
 // @icon         https://www.connectwise.com/globalassets/media/logos/company-logos/connectwise-logo-favicon.png
 // @top-level-await
@@ -12,6 +12,8 @@
 // TODO rename this script in both @name and on the file system.  Anyone who had this installed will need to delete + reinstall the script
 // TODO try to setup the mutation observer one more time
 // TODO Figure out why the CPU usage is so high on this.  Might be related to the grid observers in the other connectwise script.
+// TODO add a link to IT Glue on the main bar, using this URL  https://ainfosys.itglue.com/links/connectwise/org/[companyrecordid].
+//      companyRecordId is the same companyId we already have.
 
 let companyId = 0;
 // This is the ID of the user who submitted the ticket.
@@ -30,7 +32,7 @@ function MainLogic()
     }
     CreateNewTabLinks();
     CreateCopyTeamsLinkButton();
-
+    TesT();
     // const end = performance.now();
     // console.log(`Took ${(end - start).toFixed(2)} ms`);
 }
@@ -83,7 +85,7 @@ function CreateNewTabLinks()
         targetDiv.replaceWith(newEl);
 
         // Adds link that will open a new tab
-        newEl.innerHTML = `<a id="companyLink" href="${targetUrl}" target="_blank">Company</a>`;
+        newEl.innerHTML = `<a id="companyLink" href="${targetUrl}" target="_blank" style="color: #551A8B">Company</a>`;
     }
 
     // TODO comment
@@ -98,7 +100,7 @@ function CreateNewTabLinks()
         targetDiv.replaceWith(newEl);
 
         // Adds link that will open a new tab
-        newEl.innerHTML = `<a id="userLink" href="${targetUrl}" target="_blank">Contact</a>`;
+        newEl.innerHTML = `<a id="userLink" href="${targetUrl}" target="_blank" style="color: #551A8B">Contact</a>`;
     }
 }
 
@@ -120,7 +122,7 @@ function CreateCopyTeamsLinkButton()
     // Create the button
     const copyBtn = document.createElement('button');
     // TODO swap this over to the copy hosted in this repo
-    copyBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg" alt="Teams"> Copy Link for Teams`;
+    copyBtn.innerHTML = `<img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Microsoft%20Teams%20Icon.svg" alt="Teams"> Copy Link for Teams`;
     copyBtn.classList.add("teams-button");
     copyBtn.style.marginLeft = '10px';
 
@@ -156,6 +158,35 @@ XMLHttpRequest.prototype.open = function ()
             const response = JSON.parse(this.responseText);
             ticketUserId = response.data.action.serviceTicketViewModel.companyPodViewModel.contact.id;
         }
+
+
     });
     open.apply(this, arguments);
 };
+
+let applied = false;
+function TesT()
+{
+    if (applied)
+    {
+        return;
+    }
+
+
+    const newElement = document.createElement('div');
+    newElement.classList.add("GMDB3DUBHFJ");
+    newElement.classList.add("GMDB3DUBBFJ");
+    newElement.classList.add("GMDB3DUBLFJ");
+    newElement.classList.add("GMDB3DUBOFJ");
+    newElement.setAttribute("__gwtcellbasedwidgetimpldispatchingfocus", true);
+    newElement.setAttribute("__gwtcellbasedwidgetimpldispatchingblur", true);
+
+
+    // TODO needs to float right
+    newElement.innerHTML = `<div id="gwt-uid-112" class="GMDB3DUBFRG GMDB3DUBBTG mm_button">This is a test</div>`;
+
+    const toolbarHolder = document.querySelector(".mm_toolbarHolder .x-toolbar > div");
+    toolbarHolder.appendChild(newElement);
+
+    applied = true;
+}

@@ -2,15 +2,15 @@
 @name           ConnectWise Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.4.0
+@version        0.3.0
 @description    Overhauls the interface design of ConnectWise to improve visual clarity and usability.
 ==/UserStyle== */
 
-/* TODO document */
 /* TODO write matching readme documentation */
 /* TODO is it possible to zoom in the calendar view? */
-/* TODO style teams button */
 /* TODO Remove the links dropdown and add IT glue straight into the top bar */
+/* TODO see if I can colorize the open in maps icon which is next to the address */
+
 /* Global styles */
 @-moz-document url-prefix("https://na.myconnectwise.net/v2025_1")
 {
@@ -21,6 +21,14 @@
         padding-bottom: 6px !important;
     }
 
+    /* Makes it clear that you've selected a button when tabbing through forms */
+    /* TODO this fucks up when clicking a button, it stays there even after you're done clicking it */
+    /* .mm_button:focus
+    {
+        background: #01407b !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    } */
+
     /* Colorizes the buttons on the bottom bar */
     .cw-toolbar-search,
     .cw-toolbar-clear,
@@ -28,7 +36,8 @@
     .cw-toolbar-view,
     .cw_buttonSaveAndNew,
     .cw_buttonCancel,
-    .cw_buttonRescheduleResource
+    .cw_buttonRescheduleResource,
+    .cw-gxt-wnd .mm_button
     {
         background: #026ccf;
         border-radius: 4px !important;
@@ -40,7 +49,8 @@
     .cw-toolbar-view div,
     .cw_buttonSaveAndNew div,
     .cw_buttonCancel div,
-    .cw_buttonRescheduleResource div
+    .cw_buttonRescheduleResource div,
+    .cw-gxt-wnd .mm_button div
     {
         color: white !important;
     }
@@ -51,7 +61,8 @@
     .cw-toolbar-view div:hover,
     .cw_buttonSaveAndNew div:hover,
     .cw_buttonCancel div:hover,
-    .cw_buttonRescheduleResource div:hover
+    .cw_buttonRescheduleResource div:hover,
+    .cw-gxt-wnd .mm_button div:hover
     {
         background: #01407b !important;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -76,6 +87,47 @@
     {
         display: none !important;
     }
+
+    /* TODO see if I can fix the spacing on the scheduling widget */
+    /* .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(4),
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(5),
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(6),
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="3"],
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="4"],
+    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="5"]
+    {
+
+        display: none !important;
+    } */
+
+    /* Gives the pod header a color to make the content more visually distinct from the header */
+    .mm_podHeader
+    {
+        background-color: #d9d9d9;
+    }
+
+    /* Vertically centers collapse chevron */
+    .mm_podHeader .x-panel-toolbar
+    {
+        margin-top: -3px;
+    }
+
+    /* Notes popup that is occasionally displayed when opening a ticket */
+    .cw-gxt-wnd .mm_button
+    {
+        /* background-color: red !important; */
+    }
+}
+
+/* Dispatch portal */
+@-moz-document regexp("(^https://na.myconnectwise.net/v2025_1).*(DispatchSchedule).*")
+{
+
+    /* Hides the new item + icon on the bottom grid view, since it is kind of redundant and there is the same button in a bunch of other places */
+    .srdispatch .mm_toolbarHolder .cw-toolbar-new-item
+    {
+        display: none !important;
+    }
 }
 
 /* Note/Time popup  */
@@ -83,18 +135,25 @@
 {
 
     /* Colors dropdown statuses that must be changed. */
-    input[value="MUST CHANGE"]
+    input[value="MUST CHANGE"],
+    input[value="TICKET UPDATE REQUIRED"]
     {
         background-color: lightcoral;
+    }
+
+    /* Hides "Agreement" field */
+    tr.pod-element-row:has(div[title="Agreement"])
+    {
+        display: none !important;
     }
 }
 
 /* Service Ticket page */
-@-moz-document regexp("https://na.myconnectwise.net/v2025_1/connectwise.aspx(?:.*)startscreen=sr150(\\S*)"),
-regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ActivityDetail)"),
-regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ScheduleEntryDetail)"),
-regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicket)"),
-regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicketNew)"),
+@-moz-document regexp("https://na.myconnectwise.net/v2025_1(?:.*)startscreen=sr150(\\S*)"),
+regexp("(^https://na.myconnectwise.net/v2025_1)\\S*(ActivityDetail)"),
+regexp("(^https://na.myconnectwise.net/v2025_1)\\S*(ScheduleEntryDetail)"),
+regexp("(^https://na.myconnectwise.net/v2025_1)\\S*(ServiceTicket)"),
+regexp("(^https://na.myconnectwise.net/v2025_1)\\S*(ServiceTicketNew)"),
 regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
 {
 
@@ -115,7 +174,10 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
     .cw_ToolbarButton_Dispatch,
     .cw_ToolbarButton_Time,
     .x-toolbar .cw_ToolbarButton_New,
-    .mm_toolbarHolder .cw_CwTextButton
+    .mm_toolbarHolder .cw_CwTextButton,
+    /* TODO doesn't always work if you start on a tab other than "ticket" and refresh. */
+    /*  "Pop Out in New Window" */
+    .cw_CwIconButton > #gwt-uid-111
     {
         display: none !important;
     }
@@ -145,24 +207,12 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         padding-top: 0px !important;
         margin-left: 10px;
         border-radius: 8px !important;
-    }
 
-    .TicketNote-newNoteButton div
-    {
-        fill: white !important;
-        color: white !important;
-    }
-
-    /* Gives the pod header a color to make the content more visually distinct from the header */
-    .mm_podHeader
-    {
-        background-color: #d9d9d9;
-    }
-
-    /* Vertically centers collapse chevron */
-    .mm_podHeader .x-panel-toolbar
-    {
-        margin-top: -3px;
+        & .CwButton-innerLightActive
+        {
+            fill: white !important;
+            color: white !important;
+        }
     }
 
     /* Colorizes buttons on toolbar */
@@ -182,12 +232,25 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         inset: 0px !important;
     }
 
+    /* Removes the "Status note for Active" popup which never has anything in it,
+       have to exclude the "Reschedule resources popup" since it gets included in this selector by accident */
+    /* TODO this breaks the bundle ticket modal */
+    /* TODO this breaks the contact search on the ticket view */
+    /* TODO this breaks the scheduling pod when there are schedule conflicts */
+    /* .GMDB3DUBDLH.cw-gxt-wnd:not(:has(.cw_EditResourcesViewImpl)),
+    .GMDB3DUBJNI
+    {
+        display: none !important;
+    } */
+
     /* Colors dropdown statuses that must be changed. */
     input[value="Requires Attention"],
     input[value="TICKET UPDATE REQUIRED"],
     input[value="MUST CHANGE"],
     div.mm_comboBox:has(input.cw_subType[value=""]),
     div.mm_comboBox:has(input.cw_item[value=""]),
+    /* TODO I think this is just for me */
+    .cw_reminderMinutes[value="30 minutes"],
     div.GMDB3DUBGRG.GMDB3DUBGSG.GMDB3DUBKTG:has(img[style*="R0lGODlhEAAQAJECAHBDWvSrvP"])
     {
         background-color: lightcoral;
@@ -276,6 +339,11 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         display: none !important;
     }
 
+    /* Hides the "Known Issue Link" field */
+    tr.pod-element-row:has(div.cw_Known_Issue_Link)
+    {
+        display: none !important;
+    }
 
     /* Hides the "Customer updated" checkbox */
     .TicketNote-customerUpdatedColumn

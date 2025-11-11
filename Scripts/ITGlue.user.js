@@ -5,6 +5,7 @@
 // @description  // TODO
 // @match        https://ainfosys.itglue.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=itglue.com
+// @top-level-await
 // ==/UserScript==
 // TODO document both here and on the readme
 // TODO Play around with replacing tags like [SPAM FILTER] with a color coded badge.
@@ -42,6 +43,24 @@ function SetTabTitle()
         const orgName = GetFormattedOrgName();
         document.title = `${orgName} - Printing`;
     }
+
+    // TODO I think this is breaking the editing view
+    // if (window.location.href.includes("assets/219269-printing"))
+    // {
+    //     const printerName = [...document.querySelectorAll('dt.render-label')]
+    //         .find(dt => dt.textContent.trim() === 'Printer(s)')
+    //         ?.nextElementSibling
+    //         ?.querySelector('p')
+    //         ?.textContent
+    //         ?.trim();
+
+    //     if (document.title === printerName)
+    //     {
+    //         return;
+    //     }
+
+    //     document.title = printerName;
+    // }
 }
 
 // Adds a button that will allow the user to easily copy a formatted link to use in Team, Notion, or elsewhere.
@@ -54,7 +73,7 @@ function CreateCopyTeamsLinkButton()
         return;
     }
 
-    let pageHeaderContainer = document.querySelector(".react-page-header__left");
+    const pageHeaderContainer = document.querySelector(".react-page-header__left");
     if (!pageHeaderContainer)
     {
         // Nothing to do since we couldn't find the header
@@ -62,7 +81,7 @@ function CreateCopyTeamsLinkButton()
     }
 
     // Remove the old button and readd it.  This is so that it will always be to the right of the edit button.
-    let existingButton = pageHeaderContainer.querySelector('button.teams-button');
+    const existingButton = pageHeaderContainer.querySelector('button.teams-button');
     if (existingButton !== null)
     {
         existingButton.remove();
@@ -71,7 +90,7 @@ function CreateCopyTeamsLinkButton()
     // Create the button
     const copyBtn = document.createElement('button');
     // TODO swap this over to a the copy hosted in this repo
-    copyBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg" alt="Teams"> Copy Link for Teams`;
+    copyBtn.innerHTML = `<img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Microsoft%20Teams%20Icon.svg" alt="Teams"> Copy Link for Teams`;
     copyBtn.classList.add("teams-button");
 
     // Insert button after the div
@@ -97,14 +116,14 @@ function CreateCopyTeamsLinkButton_Passwords()
         return;
     }
 
-    let sidebarButtonsContainer = document.querySelector(".sidebar-buttons-section .buttons");
+    const sidebarButtonsContainer = document.querySelector(".sidebar-buttons-section .buttons");
     if (!sidebarButtonsContainer)
     {
         return;
     }
 
     // Remove the old button and readd it.  This is so that it will always be to the right of the edit button.
-    let existingButton = sidebarButtonsContainer.querySelector('button.teams-button');
+    const existingButton = sidebarButtonsContainer.querySelector('button.teams-button');
     if (existingButton !== null)
     {
         existingButton.remove();
@@ -112,8 +131,7 @@ function CreateCopyTeamsLinkButton_Passwords()
 
     // Create the button
     const copyBtn = document.createElement('button');
-    // TODO swap this over to the copy hosted in this repo
-    copyBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg" alt="Teams"> Copy Link for Teams`;
+    copyBtn.innerHTML = `<img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Microsoft%20Teams%20Icon.svg" alt="Teams"> Copy Link for Teams`;
     copyBtn.classList.add("teams-button");
 
     // Insert button after the div
@@ -136,15 +154,20 @@ function CreateCopyTeamsLinkButton_Passwords()
 function GetFormattedOrgName()
 {
     const orgMap = {
+        5199378: "Acorn",
+        5198948: "AFP",
         5185248: "AIS",
+        5198950: "BI",
+        5199303: "Bryant",
         5524967: "CCA",
+        5198956: "Costello",
         5198997: "Engel Law",
         6038230: "FFCU",
         6213647: "FMDT",
         5199266: "Ingerman",
         5198977: "Naiman",
         5199276: "PK Law",
-        5870388: "SBWDlaw",
+        5870388: "SBWD",
         5199304: "Waranch",
         5198991: "WEA"
     };
@@ -176,6 +199,13 @@ function ReplaceFolderIcons()
     });
 }
 
+//TODO seconds
+// TODO comment that this needs to be awaited
+function Delay(ms)
+{
+    return new Promise(resolve => { setTimeout(resolve, ms); });
+}
+
 // TODO comment
 function UpdateLogic()
 {
@@ -187,3 +217,9 @@ function UpdateLogic()
 // Will try to update the title any time that it is changed on page navigation
 const observer = new MutationObserver(UpdateLogic);
 observer.observe(document.querySelector('title'), { childList: true });
+
+// TODO the observer doesnt work on File Sharing or Printing.  Probably others too
+window.addEventListener('load', function ()
+{
+    SetTabTitle();
+});

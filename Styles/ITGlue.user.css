@@ -2,14 +2,11 @@
 @name           IT Glue Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.1.0
+@version        0.2.0
 @description    Overhauls the interface design of IT Glue to improve visual clarity and usability.
 ==/UserStyle== */
 
 /* TODO write matching readme documentation */
-/* TODO Play around with conditionally enabling + disabling parts of this.
-         https://stylus-lang.com/docs/conditionals.html
-         https://github.com/openstyles/stylus/wiki/Writing-UserCSS#var
 
 /* #region General - Applies to all pages */
 @-moz-document domain("ainfosys.itglue.com")
@@ -41,12 +38,65 @@
     {
         display: none !important;
     }
+
+    /* Makes the button appear to be pushed inwards when clicking it */
+    .kaseya-ui-button:active
+    {
+        transform: scale(0.97);
+    }
+}
+
+/* #endregion */
+
+/* #region Document page */
+
+@-moz-document regexp("^.*(itglue).*(docs).*")
+{
+
+    /* Makes it so that the last part of the breadcrumb is never shortened with an ellipses */
+    .main.breadcrumb li:last-child
+    {
+        overflow: visible !important;
+    }
+
+    /* Adds styling to the custom "Copy Link for Teams" button */
+    .teams-button
+    {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: 10px;
+        padding: 6px 12px;
+        background-color: #6264A7;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .teams-button:hover
+    {
+        background-color: #464775;
+    }
+
+    /* Makes the button appear to be pushed inwards when clicking it */
+    .teams-button:active
+    {
+        transform: scale(0.97);
+    }
+
+    .teams-button img
+    {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 /* #endregion */
 
 /* Document list view only.  Does not apply to viewing the documents themselves. */
-/* TODO look at adding these icons as replacements to the built in ones : https://github.com/dderevjanik/vscode-icons-js-example/tree/master/docs/icons */
 @-moz-document regexp("^.*(itglue).*(documents).*")
 {
 
@@ -66,6 +116,12 @@
     .doc-icon-group
     {
         display: none !important;
+    }
+
+    /* Colors whole row red when the document has expired */
+    tr:has(td span.color-red)
+    {
+        background-color: #FCE8E6;
     }
 }
 

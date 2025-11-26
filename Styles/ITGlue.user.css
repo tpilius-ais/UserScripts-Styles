@@ -2,7 +2,7 @@
 @name           IT Glue Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.2.0
+@version        0.3.0
 @description    Overhauls the interface design of IT Glue to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -40,9 +40,32 @@
     }
 
     /* Makes the button appear to be pushed inwards when clicking it */
-    .kaseya-ui-button:active
+    .kaseya-ui-button:active,
+    .btn:active
     {
-        transform: scale(0.97);
+        transform: scale(0.95);
+    }
+
+    /* Coloring delete button */
+    .kaseya-ui-button.delete,
+    .btn[data-delete-item-modal=true]
+    {
+        background-color: #D9534F !important;
+        border-color: #C64541 !important;
+        color: #fff !important;
+}
+
+    .kaseya-ui-button.delete .kaseya-ui-icon
+    {
+        color: white !important;
+    }
+
+    /* Hover state */
+    .kaseya-ui-button.delete:hover,
+    .btn[data-delete-item-modal=true]:hover
+    {
+        background-color: #C64541 !important;
+        border-color: #B83A37 !important;
     }
 }
 
@@ -73,7 +96,6 @@
         border-radius: 4px;
         font-size: 13px;
         font-weight: 500;
-        transition: background-color 0.2s ease, transform 0.1s ease;
     }
 
     .teams-button:hover
@@ -84,7 +106,7 @@
     /* Makes the button appear to be pushed inwards when clicking it */
     .teams-button:active
     {
-        transform: scale(0.97);
+        transform: scale(0.95);
     }
 
     .teams-button img

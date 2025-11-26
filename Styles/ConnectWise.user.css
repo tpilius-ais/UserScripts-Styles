@@ -2,16 +2,16 @@
 @name           ConnectWise Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.2.0
+@version        0.3.0
 @description    Overhauls the interface design of ConnectWise to improve visual clarity and usability.
 ==/UserStyle== */
 
 /* TODO document */
 /* TODO write matching readme documentation */
-/* TODO Play around with conditionally enabling + disabling parts of this.
-         https://stylus-lang.com/docs/conditionals.html
-         https://github.com/openstyles/stylus/wiki/Writing-UserCSS#var */
-
+/* TODO is it possible to zoom in the calendar view? */
+/* TODO style teams button */
+/* TODO Remove the links dropdown and add IT glue straight into the top bar */
+/* Global styles */
 @-moz-document url-prefix("https://na.myconnectwise.net/v2025_1")
 {
 
@@ -27,7 +27,8 @@
     .cw-toolbar-export,
     .cw-toolbar-view,
     .cw_buttonSaveAndNew,
-    .cw_buttonCancel
+    .cw_buttonCancel,
+    .cw_buttonRescheduleResource
     {
         background: #026ccf;
         border-radius: 4px !important;
@@ -38,7 +39,8 @@
     .cw-toolbar-export div,
     .cw-toolbar-view div,
     .cw_buttonSaveAndNew div,
-    .cw_buttonCancel div
+    .cw_buttonCancel div,
+    .cw_buttonRescheduleResource div
     {
         color: white !important;
     }
@@ -48,10 +50,23 @@
     .cw-toolbar-export div:hover,
     .cw-toolbar-view div:hover,
     .cw_buttonSaveAndNew div:hover,
-    .cw_buttonCancel div:hover
+    .cw_buttonCancel div:hover,
+    .cw_buttonRescheduleResource div:hover
     {
         background: #01407b !important;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Makes the buttons appear to be pushed inwards when clicking them */
+    .cw-toolbar-search:active,
+    .cw-toolbar-clear:active,
+    .cw-toolbar-export:active,
+    .cw-toolbar-view:active,
+    .cw_buttonSaveAndNew:active,
+    .cw_buttonCancel:active,
+    .cw_buttonRescheduleResource:active
+    {
+        transform: scale(0.95);
     }
 
     /* Hiding print button on various toolbars */
@@ -63,6 +78,7 @@
     }
 }
 
+/* Note/Time popup  */
 @-moz-document url-prefix("https://na.myconnectwise.net/v2025_1/timeexpensemodule.html")
 {
 
@@ -73,16 +89,31 @@
     }
 }
 
+/* Service Ticket page */
 @-moz-document regexp("https://na.myconnectwise.net/v2025_1/connectwise.aspx(?:.*)startscreen=sr150(\\S*)"),
 regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicket)"),
 regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ActivityDetail)"),
 regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
 {
 
+    /* Removes "Service Ticket" from the top of the page, and makes the actual ticket title larger */
+    .cw_BannerView table
+    {
+        display: none;
+    }
+
+    .cw_BannerView span div
+    {
+        position: initial;
+        font-size: larger !important;
+        padding-top: 18px;
+    }
+
     /* Hiding toolbar buttons that aren't really helpful */
     .cw_ToolbarButton_Dispatch,
     .cw_ToolbarButton_Time,
-    .cw_ToolbarButton_New
+    .cw_ToolbarButton_New,
+    .mm_toolbarHolder .cw_CwTextButton
     {
         display: none !important;
     }
@@ -99,9 +130,10 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         text-decoration: underline !important;
     }
 
-    .CwPodCol-podColWithoutSectionHeader div
+    /* Shrinks the the spacing between notes a little bit */
+    .TicketNote-rowWrap
     {
-        margin-top: 0px !important;
+        margin-top: 12px !important;
     }
 
     /* Removes some of the padding from the new Note button, and gives it some color */
@@ -152,6 +184,8 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
     input[value="Requires Attention"],
     input[value="TICKET UPDATE REQUIRED"],
     input[value="MUST CHANGE"],
+    div.mm_comboBox:has(input.cw_subType[value=""]),
+    div.mm_comboBox:has(input.cw_item[value=""]),
     div.GMDB3DUBGRG.GMDB3DUBGSG.GMDB3DUBKTG:has(img[style*="R0lGODlhEAAQAJECAHBDWvSrvP"])
     {
         background-color: lightcoral;

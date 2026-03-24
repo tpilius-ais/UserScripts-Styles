@@ -32,3 +32,14 @@ You're going to need the [Stylus](https://addons.mozilla.org/en-US/firefox/addon
     </tr>
 </table>
 
+# Development Setup
+
+```
+npm install
+```
+
+
+## Reference
+
+- [CSS Selectors Reference](https://www.w3schools.com/cssref/css_selectors.php)
+- [CSS Combinators Reference](https://www.w3schools.com/cssref/css_ref_combinators.php)

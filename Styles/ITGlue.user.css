@@ -2,7 +2,7 @@
 @name           IT Glue Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.3.0
+@version        0.4.0
 @description    Overhauls the interface design of IT Glue to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -15,7 +15,7 @@
     /* Shrinks the right hand sidebar since its a bit too wide by default */
     body.react-app-doc-editor .sidebar
     {
-        width: 350px !important;
+        max-width: 350px !important;
     }
 
     /* Makes the right hand section be a light shade of grey to make it easier to differentiate */
@@ -53,7 +53,7 @@
         background-color: #D9534F !important;
         border-color: #C64541 !important;
         color: #fff !important;
-}
+    }
 
     .kaseya-ui-button.delete .kaseya-ui-icon
     {
@@ -67,20 +67,7 @@
         background-color: #C64541 !important;
         border-color: #B83A37 !important;
     }
-}
 
-/* #endregion */
-
-/* #region Document page */
-
-@-moz-document regexp("^.*(itglue).*(docs).*")
-{
-
-    /* Makes it so that the last part of the breadcrumb is never shortened with an ellipses */
-    .main.breadcrumb li:last-child
-    {
-        overflow: visible !important;
-    }
 
     /* Adds styling to the custom "Copy Link for Teams" button */
     .teams-button
@@ -118,12 +105,39 @@
 
 /* #endregion */
 
-/* Document list view only.  Does not apply to viewing the documents themselves. */
-@-moz-document regexp("^.*(itglue).*(documents).*")
+/* #region Document page */
+@-moz-document regexp("^.*(itglue).*(docs).*")
+{
+
+    /* Makes it so that the last part of the breadcrumb is never shortened with an ellipses */
+    .main.breadcrumb li:last-child
+    {
+        overflow: visible !important;
+    }
+
+    /* Hides the "Add Flag" bar at the top of a document since we don't use the flags. */
+    .add-edit-flag
+    {
+        display: none !important;
+    }
+
+    .document-content-wrapper
+    {
+        margin-top: 20px;
+    }
+
+}
+
+/* #endregion */
+
+/* Document/password list view only.  Does not apply to viewing the documents/passwords themselves. */
+@-moz-document regexp("^.*(itglue).*(documents).*"),
+regexp("^.*(itglue).*(passwords).*")
 {
 
     /* Makes the "X documents" label be on the same line as the folder rather than underneath it */
-    .doc-name-group.qa-doc-name-group
+    .doc-name-group.qa-doc-name-group,
+    .draggable-name-group.qa-draggable-name-group
     {
         flex-direction: row !important;
     }
@@ -131,10 +145,10 @@
     /* Centers the text vertically */
     .doc-name-group .subtext
     {
-        line-height: 24px;
+        line-height: 24px !important;
     }
 
-    /* Hides the useless edit + copy icons that show up when you hover near an item */
+    /* Hides the edit + copy icons that show up when you hover near an item */
     .doc-icon-group
     {
         display: none !important;

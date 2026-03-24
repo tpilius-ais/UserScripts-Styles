@@ -1,8 +1,16 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
+    "folders": [
+        {
+            "path": "."
+        }
     ],
-    "settings": {}
+    "settings": {
+        "cSpell.words": [
+            "ainfosys",
+            "itglue",
+            "Kaseya",
+            "userscripts",
+            "Violentmonkey"
+        ]
+    }
 }

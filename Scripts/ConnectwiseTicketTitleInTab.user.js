@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ConnectWise - Ticket Description in Title
-// @version      0.0.1
+// @version      0.0.2
 // @description  TODO
 // @author       Tim Pilius
 // @match        https://na.myconnectwise.net/*

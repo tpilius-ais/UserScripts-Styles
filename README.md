@@ -9,10 +9,26 @@ You're going to need the [Stylus](https://addons.mozilla.org/en-US/firefox/addon
         <td>ConnectWise Tweaks</td>
         <td>Overhauls the interface design of ConnectWise to improve visual clarity and usability.</td>
         <td></td>
-        <td> <a href="https://github.com/tpilius-ais/UserScripts-Styles/raw/refs/heads/master/Styles/ConnectWise.user.css" >
+        <td>
+            <a href="https://github.com/tpilius-ais/UserScripts-Styles/raw/refs/heads/master/Styles/ConnectWise.user.css" >
+                <!-- TODO add these icons to the repo itself -->
                 <img src="https://cdn.add0n.com/icons/stylus128.png" style="width:16px;height:16px;margin-right:6px;">
                 Install with Stylus
-            </a></td>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <!-- TODO add icon -->
+        <td>ConnectWise Ticket Page Tweaks</td>
+        <td>Adds additional functionality to ConnectWise's Ticket view.  Adds a button to copy a formatted link to be used in Teams or ITGlue.  Display's the ticket summary in the browser tab.  Clicking on either the Company or Contact will open in a new tab instead of the current tab. </td>
+        <td>
+            <a href="https://github.com/tpilius-ais/UserScripts-Styles/raw/refs/heads/master/Scripts/ConnectwiseTicketTitleInTab.user.js" >
+                <!-- TODO add these icons to the repo itself -->
+                <img src="https://violentmonkey.github.io/_astro/vm.C4h557K-.png" style="width:16px;height:16px;margin-right:6px;">
+                Install with Violentmonkey
+            </a>
+        </td>
+        <td></td>
     </tr>
     <tr>
         <!-- TODO add icon -->
@@ -20,11 +36,13 @@ You're going to need the [Stylus](https://addons.mozilla.org/en-US/firefox/addon
         <td>Overhauls the interface design of IT Glue to improve visual clarity and usability. Adds additional functionality to improve tech workflow</td>
         <td>
             <a href="https://github.com/tpilius-ais/UserScripts-Styles/raw/refs/heads/master/Scripts/ITGlue.user.js" >
+                <!-- TODO add these icons to the repo itself -->
                 <img src="https://violentmonkey.github.io/_astro/vm.C4h557K-.png" style="width:16px;height:16px;margin-right:6px;">
                 Install with Violentmonkey
             </a>
         <td>
             <a href="https://github.com/tpilius-ais/UserScripts-Styles/raw/refs/heads/master/Styles/ITGlue.user.css" >
+                <!-- TODO add these icons to the repo itself -->
                 <img src="https://cdn.add0n.com/icons/stylus128.png" style="width:16px;height:16px;margin-right:6px;">
                 Install with Stylus
             </a>

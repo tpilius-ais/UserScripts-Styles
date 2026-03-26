@@ -1,7 +1,6 @@
 import eslint from "@eslint/js";
 import globals from "globals";
 import { defineConfig } from "eslint/config";
-import css from "@eslint/css";
 
 export default defineConfig([
     {
@@ -15,6 +14,7 @@ export default defineConfig([
             globals:
             {
                 ...globals.browser,
+                unsafeWindow: "readonly"
             }
         },
         rules:
@@ -34,6 +34,7 @@ export default defineConfig([
             "no-shadow": "error",
             "no-var": "warn",
             "require-await": "error",
+            "no-useless-return": "warn",
 
             // Disabling rules that I don't really care about.
             "no-console": "off",
@@ -52,6 +53,11 @@ export default defineConfig([
             "vars-on-top": "off",
             "no-continue": "off",
             "id-length": "off",
+            "func-names": "off",
+            "max-lines-per-function": "off",
+            "prefer-rest-params": "off",
+            "prefer-destructuring": "off",
+            "no-invalid-this": "off"
         }
     }
 ]);

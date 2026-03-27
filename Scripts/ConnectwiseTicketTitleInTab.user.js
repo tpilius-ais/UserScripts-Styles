@@ -120,7 +120,7 @@ function CreateCopyTeamsLinkButton()
     // Create the button
     const copyBtn = document.createElement('button');
     // TODO swap this over to the copy hosted in this repo
-    copyBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg" alt="Teams"> Copy Link for Teams`;
+    copyBtn.innerHTML = `<img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Microsoft%20Teams%20Icon.svg" alt="Teams"> Copy Link for Teams`;
     copyBtn.classList.add("teams-button");
     copyBtn.style.marginLeft = '10px';
 

@@ -6,11 +6,10 @@
 @description    Overhauls the interface design of ConnectWise to improve visual clarity and usability.
 ==/UserStyle== */
 
-/* TODO document */
 /* TODO write matching readme documentation */
 /* TODO is it possible to zoom in the calendar view? */
-/* TODO style teams button */
 /* TODO Remove the links dropdown and add IT glue straight into the top bar */
+
 /* Global styles */
 @-moz-document url-prefix("https://na.myconnectwise.net/v2025_1")
 {
@@ -170,13 +169,13 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         padding-top: 18px;
     }
 
-    /* Hiding toolbar buttons that aren't really helpful */
+    /* Hiding top toolbar buttons that aren't really helpful */
     .cw_ToolbarButton_Dispatch,
     .cw_ToolbarButton_Time,
-    /* TODO this breaks the + Under Resources & Meetings.  Might be able to do something else with this functionality wise. */
-    .cw_ToolbarButton_New,
+    .x-toolbar .cw_ToolbarButton_New,
     .mm_toolbarHolder .cw_CwTextButton,
-    /* This is the pop out in new window button in the toolbar */
+    /* TODO doesn't always work if you start on a tab other than "ticket" and refresh. */
+    /*  "Pop Out in New Window" */
     .cw_CwIconButton > #gwt-uid-111
     {
         display: none !important;
@@ -207,12 +206,12 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         padding-top: 0px !important;
         margin-left: 10px;
         border-radius: 8px !important;
-    }
 
-    .TicketNote-newNoteButton div
-    {
-        fill: white !important;
-        color: white !important;
+        & .CwButton-innerLightActive
+        {
+            fill: white !important;
+            color: white !important;
+        }
     }
 
     /* Colorizes buttons on toolbar */
@@ -286,7 +285,6 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         }
     }
 
-    /* TODO could possibly use nesting here https://www.w3schools.com/cssref/sel_nesting.php */
     /* Adds styling to the custom "Copy Link for Teams" button */
     .teams-button
     {
@@ -301,26 +299,27 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         border-radius: 4px;
         font-size: 13px;
         font-weight: 500;
+
+        &:hover
+        {
+            background-color: #464775;
+        }
+
+        /* Makes the button appear to be pushed inwards when clicking it */
+        &:active
+        {
+            transform: scale(0.95);
+        }
+
+        /* Resizes icon */
+        & img
+        {
+            width: 16px;
+            height: 16px;
+        }
     }
 
-    .teams-button:hover
-    {
-        background-color: #464775;
-    }
-
-    /* Makes the button appear to be pushed inwards when clicking it */
-    .teams-button:active
-    {
-        transform: scale(0.95);
-    }
-
-    .teams-button img
-    {
-        width: 16px;
-        height: 16px;
-    }
-
-    /* Hides the annoying "TEST: Inventory" field that they added recently. */
+    /* Hides the "TEST: Inventory" field */
     tr.pod-element-row:has(div[title="***TEST: Inventory***"])
     {
         display: none !important;
@@ -340,6 +339,12 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
 
     /* Hides the "Known Issue Link" field */
     tr.pod-element-row:has(div.cw_Known_Issue_Link)
+    {
+        display: none !important;
+    }
+
+    /* Hides the "Customer updated" checkbox */
+    .TicketNote-customerUpdatedColumn
     {
         display: none !important;
     }

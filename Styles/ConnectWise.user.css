@@ -2,7 +2,7 @@
 @name           ConnectWise Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.3.0
+@version        0.4.0
 @description    Overhauls the interface design of ConnectWise to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -91,8 +91,10 @@
 
 /* Service Ticket page */
 @-moz-document regexp("https://na.myconnectwise.net/v2025_1/connectwise.aspx(?:.*)startscreen=sr150(\\S*)"),
-regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicket)"),
 regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ActivityDetail)"),
+regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ScheduleEntryDetail)"),
+regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicket)"),
+regexp("(^https://na.myconnectwise.net/v2025_1/connectwise.aspx)\\S*(ServiceTicketNew)"),
 regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
 {
 
@@ -109,10 +111,10 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         padding-top: 18px;
     }
 
-    /* Hiding toolbar buttons that aren't really helpful */
+    /* Hiding top toolbar buttons that aren't really helpful */
     .cw_ToolbarButton_Dispatch,
     .cw_ToolbarButton_Time,
-    .cw_ToolbarButton_New,
+    .x-toolbar .cw_ToolbarButton_New,
     .mm_toolbarHolder .cw_CwTextButton
     {
         display: none !important;
@@ -220,5 +222,64 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         {
             width: calc(97cqw - 570px) !important;
         }
+    }
+
+    /* Adds styling to the custom "Copy Link for Teams" button */
+    .teams-button
+    {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: 10px;
+        padding: 6px 12px;
+        background-color: #6264A7;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+
+        &:hover
+        {
+            background-color: #464775;
+        }
+
+        /* Makes the button appear to be pushed inwards when clicking it */
+        &:active
+        {
+            transform: scale(0.95);
+        }
+
+        /* Resizes icon */
+        & img
+        {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    /* Hides the "TEST: Inventory" field */
+    tr.pod-element-row:has(div[title="***TEST: Inventory***"])
+    {
+        display: none !important;
+    }
+
+    /* Hides SLA Status field */
+    .cw_slaStatus
+    {
+        display: none !important;
+    }
+
+    /* Hides Impact field */
+    .cw_impact
+    {
+        display: none !important;
+    }
+
+
+    /* Hides the "Customer updated" checkbox */
+    .TicketNote-customerUpdatedColumn
+    {
+        display: none !important;
     }
 }

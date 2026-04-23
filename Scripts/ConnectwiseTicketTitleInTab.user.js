@@ -104,6 +104,7 @@ function CreateNewTabLinks()
     }
 }
 
+// TODO make it so that a "Link Copied" toast notification shows up when you click the button.
 // Creates a button at the top of the page that copies a pre-formatted link to this ticket, which has the display text as the ticket id + description.
 // The link can then be pasted into things like Teams and IT Glue, where it will keep the formatting.
 function CreateCopyTeamsLinkButton()

@@ -63,6 +63,7 @@ function SetTabTitle()
     // }
 }
 
+// TODO make it so that a "Link Copied" toast notification shows up when you click the button.
 // Adds a button that will allow the user to easily copy a formatted link to use in Team, Notion, or elsewhere.
 // This link will be formatted so that the display text is of the format "[Client] - Document Title", while still linking to the correct page.
 function CreateCopyTeamsLinkButton()
@@ -108,6 +109,7 @@ function CreateCopyTeamsLinkButton()
     });
 }
 
+// TODO make it so that a "Link Copied" toast notification shows up when you click the button.
 function CreateCopyTeamsLinkButton_Passwords()
 {
     // Only creating this button on the passwords page

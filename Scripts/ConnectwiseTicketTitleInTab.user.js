@@ -21,6 +21,26 @@ let companyId = 0;
 let ticketUserId = 0;
 const connectwiseUrlBase = "https://na.myconnectwise.net/v4_6_release/services/system_io/router/openrecord.rails?locale=en_US&companyName=ainfosys";
 
+// Not sure why, but apparantly this being at the top prevents CreateNewTabLinks() from erroring out on page load
+function MainLogic()
+{
+    const start = performance.now();
+    SetTabTitle();
+
+    // These should only be run on the service ticket page
+    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
+    {
+        return;
+    }
+    CreateNewTabLinks();
+    CreateCopyTeamsLinkButton();
+    AddITGlueButtonToToolbar();
+    // const end = performance.now();
+    // console.log(`Took ${(end - start).toFixed(2)} ms`);
+}
+
+setInterval(MainLogic, 3000);
+
 // #region Functions
 
 // TODO maybe break this out into another script.  Or just combine everything connectwise related into one script.
@@ -127,24 +147,6 @@ function CreateCopyTeamsLinkButton()
 
 // #endregion
 
-function MainLogic()
-{
-    const start = performance.now();
-    SetTabTitle();
-
-    // These should only be run on the service ticket page
-    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
-    {
-        return;
-    }
-    CreateNewTabLinks();
-    CreateCopyTeamsLinkButton();
-    AddITGlueButtonToToolbar();
-    // const end = performance.now();
-    // console.log(`Took ${(end - start).toFixed(2)} ms`);
-}
-
-setInterval(MainLogic, 3000);
 
 // Intercepts requests the browser makes, and stores the results for our use later.
 const open = XMLHttpRequest.prototype.open;
@@ -164,8 +166,6 @@ XMLHttpRequest.prototype.open = function ()
             const response = JSON.parse(this.responseText);
             ticketUserId = response.data.action.serviceTicketViewModel.companyPodViewModel.contact.id;
         }
-
-
     });
     open.apply(this, arguments);
 };
@@ -179,29 +179,26 @@ function AddITGlueButtonToToolbar()
     }
 
     // const originalButton = document.querySelector(".cw_Copy");
+    // TODO just make a brand new element and manually position it at the end.  Cloning and all this isn't worth the hassle
     const originalButton = document.querySelector(".cw_ToolbarButton_Time");
+    originalButton.style.left = "469px";
 
     // Stripping out original event handlers
     const cloned = originalButton.cloneNode(true);
     originalButton.replaceWith(cloned);
 
-    const deleteButton = document.querySelector('.cw_ToolbarButton_Delete');
+    // Remove all child nodes
+    cloned.firstChild.remove();
 
-    const left1 = parseFloat(getComputedStyle(deleteButton).left) || 0;
+    //
+    // Add our link
+    // const link = document.createElement('a');
+    // link.href = `https://ainfosys.itglue.com/links/connectwise/org/${companyId}`;
+    // link.target = "_blank";
+    // // TODO use image from repo
+    // link.innerHTML = "<img src='https://www.google.com/s2/favicons?sz=64&domain=itglue.com' style='height:16px; width=16px'> IT Glue";
 
-    originalButton.style.left = `${left1 + 100}px`;
-
-    // const newElement = document.createElement('div');
-
-    // newElement.classList.add("GMDB3DUBOFJ");
-
-    console.log("asd");
-
-    // // TODO needs to float right
-    // newElement.innerHTML = `<div id="gwt-uid-112" class="GMDB3DUBFRG GMDB3DUBBTG mm_button">This is a test</div>`;
-
-    // const toolbarHolder = document.querySelector(".mm_toolbarHolder .x-toolbar > div");
-    // toolbarHolder.appendChild(newElement);
+    // cloned.appendChild(link);
 
     applied = true;
 }

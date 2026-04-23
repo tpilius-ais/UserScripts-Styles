@@ -9,9 +9,10 @@
 // ==/UserScript==
 
 'use strict';
-// TODO rename this script in both @name and on the file system.  Anyone who had this installed will need to delete + reinstall the script
+
 // TODO try to setup the mutation observer one more time
 // TODO Figure out why the CPU usage is so high on this.  Might be related to the grid observers in the other connectwise script.
+//      Could also just us booleans to determine if there is anything to do or if the changes have already been applied
 // TODO add a link to IT Glue on the main bar, using this URL  https://ainfosys.itglue.com/links/connectwise/org/[companyrecordid].
 //      companyRecordId is the same companyId we already have.
 
@@ -20,24 +21,7 @@ let companyId = 0;
 let ticketUserId = 0;
 const connectwiseUrlBase = "https://na.myconnectwise.net/v4_6_release/services/system_io/router/openrecord.rails?locale=en_US&companyName=ainfosys";
 
-function MainLogic()
-{
-    const start = performance.now();
-    SetTabTitle();
-
-    // These should only be run on the service ticket page
-    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
-    {
-        return;
-    }
-    CreateNewTabLinks();
-    CreateCopyTeamsLinkButton();
-    TesT();
-    // const end = performance.now();
-    // console.log(`Took ${(end - start).toFixed(2)} ms`);
-}
-
-setInterval(MainLogic, 3000);
+// #region Functions
 
 // TODO maybe break this out into another script.  Or just combine everything connectwise related into one script.
 function SetTabTitle()
@@ -141,6 +125,27 @@ function CreateCopyTeamsLinkButton()
     });
 }
 
+// #endregion
+
+function MainLogic()
+{
+    const start = performance.now();
+    SetTabTitle();
+
+    // These should only be run on the service ticket page
+    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
+    {
+        return;
+    }
+    CreateNewTabLinks();
+    CreateCopyTeamsLinkButton();
+    AddITGlueButtonToToolbar();
+    // const end = performance.now();
+    // console.log(`Took ${(end - start).toFixed(2)} ms`);
+}
+
+setInterval(MainLogic, 3000);
+
 // Intercepts requests the browser makes, and stores the results for our use later.
 const open = XMLHttpRequest.prototype.open;
 XMLHttpRequest.prototype.open = function ()
@@ -166,28 +171,37 @@ XMLHttpRequest.prototype.open = function ()
 };
 
 let applied = false;
-function TesT()
+function AddITGlueButtonToToolbar()
 {
     if (applied)
     {
         return;
     }
 
+    // const originalButton = document.querySelector(".cw_Copy");
+    const originalButton = document.querySelector(".cw_ToolbarButton_Time");
 
-    const newElement = document.createElement('div');
-    newElement.classList.add("GMDB3DUBHFJ");
-    newElement.classList.add("GMDB3DUBBFJ");
-    newElement.classList.add("GMDB3DUBLFJ");
-    newElement.classList.add("GMDB3DUBOFJ");
-    newElement.setAttribute("__gwtcellbasedwidgetimpldispatchingfocus", true);
-    newElement.setAttribute("__gwtcellbasedwidgetimpldispatchingblur", true);
+    // Stripping out original event handlers
+    const cloned = originalButton.cloneNode(true);
+    originalButton.replaceWith(cloned);
 
+    const deleteButton = document.querySelector('.cw_ToolbarButton_Delete');
 
-    // TODO needs to float right
-    newElement.innerHTML = `<div id="gwt-uid-112" class="GMDB3DUBFRG GMDB3DUBBTG mm_button">This is a test</div>`;
+    const left1 = parseFloat(getComputedStyle(deleteButton).left) || 0;
 
-    const toolbarHolder = document.querySelector(".mm_toolbarHolder .x-toolbar > div");
-    toolbarHolder.appendChild(newElement);
+    originalButton.style.left = `${left1 + 100}px`;
+
+    // const newElement = document.createElement('div');
+
+    // newElement.classList.add("GMDB3DUBOFJ");
+
+    console.log("asd");
+
+    // // TODO needs to float right
+    // newElement.innerHTML = `<div id="gwt-uid-112" class="GMDB3DUBFRG GMDB3DUBBTG mm_button">This is a test</div>`;
+
+    // const toolbarHolder = document.querySelector(".mm_toolbarHolder .x-toolbar > div");
+    // toolbarHolder.appendChild(newElement);
 
     applied = true;
 }

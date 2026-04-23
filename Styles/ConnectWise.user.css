@@ -111,12 +111,6 @@
     {
         margin-top: -3px;
     }
-
-    /* Notes popup that is occasionally displayed when opening a ticket */
-    .cw-gxt-wnd .mm_button
-    {
-        /* background-color: red !important; */
-    }
 }
 
 /* Dispatch portal */
@@ -172,8 +166,11 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
 
     /* Hiding top toolbar buttons that aren't really helpful */
     .cw_ToolbarButton_Dispatch,
-    .cw_ToolbarButton_Time,
+    /* .cw_ToolbarButton_Time, */
     .x-toolbar .cw_ToolbarButton_New,
+    .cw_PsaHistoryButton,
+    .cw_PsaMoreMenuButton,
+    /* Hides "Share" drop down */
     .mm_toolbarHolder .cw_CwTextButton,
     /* TODO doesn't always work if you start on a tab other than "ticket" and refresh. */
     /*  "Pop Out in New Window" */
@@ -319,12 +316,6 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
             width: 16px;
             height: 16px;
         }
-    }
-
-    /* Hides the "TEST: Inventory" field */
-    tr.pod-element-row:has(div[title="***TEST: Inventory***"])
-    {
-        display: none !important;
     }
 
     /* Hides SLA Status field */

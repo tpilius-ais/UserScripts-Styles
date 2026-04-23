@@ -35,6 +35,7 @@ export default defineConfig([
             "no-var": "warn",
             "require-await": "error",
             "no-useless-return": "warn",
+            "no-unused-vars": "warn",
 
             // Disabling rules that I don't really care about.
             "no-console": "off",

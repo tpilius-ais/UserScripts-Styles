@@ -130,31 +130,6 @@ function CreateCopyTeamsLinkButton()
     });
 }
 
-// #endregion
-
-
-// Intercepts requests the browser makes, and stores the results for our use later.
-// const open = XMLHttpRequest.prototype.open;
-// XMLHttpRequest.prototype.open = function ()
-// {
-//     this.addEventListener("load", function ()
-//     {
-//         // Grabs the company id
-//         if (this.responseURL.includes("GetCompanyNameAction.rails"))
-//         {
-//             const response = JSON.parse(this.responseText);
-//             companyId = response.data.action.companyRecID;
-//         }
-
-//         if (this.responseURL.includes("GetServiceTicketDetailViewAction.rails"))
-//         {
-//             const response = JSON.parse(this.responseText);
-//             ticketUserId = response.data.action.serviceTicketViewModel.companyPodViewModel.contact.id;
-//         }
-//     });
-//     open.apply(this, arguments);
-// };
-
 let applied = false;
 function AddITGlueButtonToToolbar()
 {
@@ -163,12 +138,11 @@ function AddITGlueButtonToToolbar()
         return;
     }
 
-    // const originalButton = document.querySelector(".cw_Copy");
     // TODO just make a brand new element and manually position it at the end.  Cloning and all this isn't worth the hassle
     const originalButton = document.querySelector(".cw_ToolbarButton_Time");
     originalButton.style.left = "469px";
 
-    // Stripping out original event handlers
+    // // Stripping out original event handlers
     const cloned = originalButton.cloneNode(true);
     originalButton.replaceWith(cloned);
 
@@ -177,16 +151,42 @@ function AddITGlueButtonToToolbar()
 
     //
     // Add our link
-    // const link = document.createElement('a');
-    // link.href = `https://ainfosys.itglue.com/links/connectwise/org/${companyId}`;
-    // link.target = "_blank";
-    // // TODO use image from repo
-    // link.innerHTML = "<img src='https://www.google.com/s2/favicons?sz=64&domain=itglue.com' style='height:16px; width=16px'> IT Glue";
+    const link = document.createElement('a');
+    link.href = `https://ainfosys.itglue.com/links/connectwise/org/${companyId}`;
+    link.target = "_blank";
+    // TODO use image from repo
+    link.innerHTML = "<img src='https://www.google.com/s2/favicons?sz=64&domain=itglue.com' style='height:16px; width=16px'> IT Glue";
 
-    // cloned.appendChild(link);
+    cloned.appendChild(link);
 
+    // Makes things redraw correctly so that all of the icons are aligned correctly again
+    originalButton.style.left = "469px";
     applied = true;
 }
+
+// #endregion
+
+// Intercepts requests the browser makes, and stores the results for our use later.
+const open = XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open = function ()
+{
+    this.addEventListener("load", function ()
+    {
+        // Grabs the company id
+        if (this.responseURL.includes("GetCompanyNameAction.rails"))
+        {
+            const response = JSON.parse(this.responseText);
+            companyId = response.data.action.companyRecID;
+        }
+
+        if (this.responseURL.includes("GetServiceTicketDetailViewAction.rails"))
+        {
+            const response = JSON.parse(this.responseText);
+            ticketUserId = response.data.action.serviceTicketViewModel.companyPodViewModel.contact.id;
+        }
+    });
+    open.apply(this, arguments);
+};
 
 function MainLogic()
 {
@@ -202,8 +202,9 @@ function MainLogic()
     CreateNewTabLinks();
     CreateCopyTeamsLinkButton();
     AddITGlueButtonToToolbar();
-    const end = performance.now();
-    console.log(`Took ${(end - start).toFixed(3)} ms`);
+
+    // const end = performance.now();
+    // console.log(`Took ${(end - start).toFixed(3)} ms`);
 }
 
 setInterval(MainLogic, 3000);

@@ -9,6 +9,8 @@
 // ==/UserScript==
 // TODO document both here and on the readme
 // TODO Play around with replacing tags like [SPAM FILTER] with a color coded badge.
+// TODO Copy Link for Teams on the password page will include the "category" in the text as well.
+// Example https://ainfosys.itglue.com/6213647/passwords/33044080 will copy as "DNS WordPressDNS Management"
 'use strict';
 
 // Cleans up the tab title so it is actually more readable and useful.

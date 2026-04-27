@@ -6,6 +6,7 @@
 // @match        https://na.myconnectwise.net/*
 // @icon         https://www.connectwise.com/globalassets/media/logos/company-logos/connectwise-logo-favicon.png
 // @top-level-await
+// @noframes     This prevents the script from being loaded twice due to CW's iframes
 // ==/UserScript==
 
 // TODO document what it does

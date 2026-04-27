@@ -5,47 +5,35 @@
 // @description  TODO
 // @match        https://na.myconnectwise.net/*
 // @icon         https://www.connectwise.com/globalassets/media/logos/company-logos/connectwise-logo-favicon.png
-// @top-level-await
+// @noframes     This prevents the script from being loaded twice due to CW's iframes
 // ==/UserScript==
 
 'use strict';
 
-// TODO try to setup the mutation observer one more time
 // TODO Figure out why the CPU usage is so high on this.  Might be related to the grid observers in the other connectwise script.
 //      Could also just us booleans to determine if there is anything to do or if the changes have already been applied
 // TODO add a link to IT Glue on the main bar, using this URL  https://ainfosys.itglue.com/links/connectwise/org/[companyrecordid].
 //      companyRecordId is the same companyId we already have.
+// TODO add a link to Ninja to show the company's devices in the toolbar.  You will need to create a new group in Ninja which can be done after adding
+//      a search filter and then clicking "Save group".  Example url https://app.ninjarmm.com/#/group/247.  Will need to create a manual mapping table for
+//      lookup.
 
 let companyId = 0;
 // This is the ID of the user who submitted the ticket.
 let ticketUserId = 0;
 const connectwiseUrlBase = "https://na.myconnectwise.net/v4_6_release/services/system_io/router/openrecord.rails?locale=en_US&companyName=ainfosys";
 
-// Not sure why, but apparantly this being at the top prevents CreateNewTabLinks() from erroring out on page load
-function MainLogic()
-{
-    const start = performance.now();
-    SetTabTitle();
+// #region Functions
 
-    // These should only be run on the service ticket page
-    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
+// TODO consider breaking this out into its own script.  Used on more than one page.
+let tabTitleSet = false;
+function SetTabTitle()
+{
+    if (tabTitleSet)
     {
         return;
     }
-    CreateNewTabLinks();
-    CreateCopyTeamsLinkButton();
-    AddITGlueButtonToToolbar();
-    // const end = performance.now();
-    // console.log(`Took ${(end - start).toFixed(2)} ms`);
-}
 
-setInterval(MainLogic, 3000);
-
-// #region Functions
-
-// TODO maybe break this out into another script.  Or just combine everything connectwise related into one script.
-function SetTabTitle()
-{
     // Add company name to tab title.
     // CompanyFV is when you click on the company while on a ticket.
     // CompanyDetail is when you click on a company from the Company search view.
@@ -53,27 +41,24 @@ function SetTabTitle()
     {
         const companyNameDiv = document.querySelector(".gwt-Label.mm_label.GMDB3DUBDDL.detailLabel.cw_CwLabel");
         document.title = companyNameDiv.innerText;
-        return;
     }
 
     if (document.title.includes("Manage: "))
     {
         document.title = document.title.replace("Manage: ", "");
-        return;
     }
 
-    // Only want to get the ticket description if we're on the ticket screen.
-    // TODO this doesn't always reliably work.  Like if you copy + paste the link you get in "Share"
+    // Adds ticket summary to tab title
     if (window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV"))
     {
         const summary = document.querySelector(".cw_PsaSummaryHeader").value;
         document.title = summary;
-        return;
     }
+
+    tabTitleSet = true;
 }
 
-// TODO rename, absolutely horrible name.
-// TODO comment
+// TODO rename, absolutely horrible name.  Comment as well.
 function CreateNewTabLinks()
 {
     // TODO comment
@@ -149,26 +134,26 @@ function CreateCopyTeamsLinkButton()
 
 
 // Intercepts requests the browser makes, and stores the results for our use later.
-const open = XMLHttpRequest.prototype.open;
-XMLHttpRequest.prototype.open = function ()
-{
-    this.addEventListener("load", function ()
-    {
-        // Grabs the company id
-        if (this.responseURL.includes("GetCompanyNameAction.rails"))
-        {
-            const response = JSON.parse(this.responseText);
-            companyId = response.data.action.companyRecID;
-        }
+// const open = XMLHttpRequest.prototype.open;
+// XMLHttpRequest.prototype.open = function ()
+// {
+//     this.addEventListener("load", function ()
+//     {
+//         // Grabs the company id
+//         if (this.responseURL.includes("GetCompanyNameAction.rails"))
+//         {
+//             const response = JSON.parse(this.responseText);
+//             companyId = response.data.action.companyRecID;
+//         }
 
-        if (this.responseURL.includes("GetServiceTicketDetailViewAction.rails"))
-        {
-            const response = JSON.parse(this.responseText);
-            ticketUserId = response.data.action.serviceTicketViewModel.companyPodViewModel.contact.id;
-        }
-    });
-    open.apply(this, arguments);
-};
+//         if (this.responseURL.includes("GetServiceTicketDetailViewAction.rails"))
+//         {
+//             const response = JSON.parse(this.responseText);
+//             ticketUserId = response.data.action.serviceTicketViewModel.companyPodViewModel.contact.id;
+//         }
+//     });
+//     open.apply(this, arguments);
+// };
 
 let applied = false;
 function AddITGlueButtonToToolbar()
@@ -202,3 +187,23 @@ function AddITGlueButtonToToolbar()
 
     applied = true;
 }
+
+function MainLogic()
+{
+    const start = performance.now();
+    SetTabTitle();
+
+    // These should only be run on the service ticket page
+    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
+    {
+        return;
+    }
+
+    CreateNewTabLinks();
+    CreateCopyTeamsLinkButton();
+    AddITGlueButtonToToolbar();
+    const end = performance.now();
+    console.log(`Took ${(end - start).toFixed(3)} ms`);
+}
+
+setInterval(MainLogic, 3000);

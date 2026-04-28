@@ -16,6 +16,7 @@
 // Cleans up the tab title so it is actually more readable and useful.
 function SetTabTitle()
 {
+    // TODO add the client name before passwords https://ainfosys.itglue.com/5198948/passwords/21290057
     // Makes it so that the document name is actually readable in the tab title, and not just cut off because "Documents -" at the beginning.
     if (document.title.includes("Documents - "))
     {

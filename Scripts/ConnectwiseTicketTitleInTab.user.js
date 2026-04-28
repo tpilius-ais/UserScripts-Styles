@@ -13,6 +13,7 @@
 // TODO add a link to Ninja to show the company's devices in the toolbar.  You will need to create a new group in Ninja which can be done after adding
 //      a search filter and then clicking "Save group".  Example url https://app.ninjarmm.com/#/group/247.  Will need to create a manual mapping table for
 //      lookup.
+//      Possibly suggest here https://ninjarmm.zendesk.com/hc/en-us/community/topics/360001187411-General-Discussion
 
 let companyId = 0;
 // This is the ID of the user who submitted the ticket.

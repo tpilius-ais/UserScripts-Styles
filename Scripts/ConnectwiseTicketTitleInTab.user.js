@@ -10,10 +10,6 @@
 
 'use strict';
 
-// TODO Figure out why the CPU usage is so high on this.  Might be related to the grid observers in the other connectwise script.
-//      Could also just us booleans to determine if there is anything to do or if the changes have already been applied
-// TODO add a link to IT Glue on the main bar, using this URL  https://ainfosys.itglue.com/links/connectwise/org/[companyrecordid].
-//      companyRecordId is the same companyId we already have.
 // TODO add a link to Ninja to show the company's devices in the toolbar.  You will need to create a new group in Ninja which can be done after adding
 //      a search filter and then clicking "Save group".  Example url https://app.ninjarmm.com/#/group/247.  Will need to create a manual mapping table for
 //      lookup.
@@ -26,14 +22,8 @@ const connectwiseUrlBase = "https://na.myconnectwise.net/v4_6_release/services/s
 // #region Functions
 
 // TODO consider breaking this out into its own script.  Used on more than one page.
-let tabTitleSet = false;
 function SetTabTitle()
 {
-    if (tabTitleSet)
-    {
-        return;
-    }
-
     // Add company name to tab title.
     // CompanyFV is when you click on the company while on a ticket.
     // CompanyDetail is when you click on a company from the Company search view.
@@ -41,11 +31,13 @@ function SetTabTitle()
     {
         const companyNameDiv = document.querySelector(".gwt-Label.mm_label.GMDB3DUBDDL.detailLabel.cw_CwLabel");
         document.title = companyNameDiv.innerText;
+        return;
     }
 
     if (document.title.includes("Manage: "))
     {
         document.title = document.title.replace("Manage: ", "");
+        return;
     }
 
     // Adds ticket summary to tab title
@@ -53,9 +45,8 @@ function SetTabTitle()
     {
         const summary = document.querySelector(".cw_PsaSummaryHeader").value;
         document.title = summary;
+        return;
     }
-
-    tabTitleSet = true;
 }
 
 // TODO rename, absolutely horrible name.  Comment as well.
@@ -130,38 +121,33 @@ function CreateCopyTeamsLinkButton()
     });
 }
 
-let applied = false;
-function AddITGlueButtonToToolbar()
+let customLinksAdded = false;
+function AddToolbarCustomLinks()
 {
-    if (applied)
+    if (customLinksAdded)
     {
         return;
     }
 
-    // TODO just make a brand new element and manually position it at the end.  Cloning and all this isn't worth the hassle
-    const originalButton = document.querySelector(".cw_ToolbarButton_Time");
-    originalButton.style.left = "469px";
+    // Looks like I do need to hijack one of the existing buttons in order to get things to layout properly
+    const originalButton = document.querySelector(".cw_ToolbarButton_Help");
+    originalButton.style.left = "400px";
 
-    // // Stripping out original event handlers
+    // Stripping out original event handlers
     const cloned = originalButton.cloneNode(true);
     originalButton.replaceWith(cloned);
 
-    // Remove all child nodes
+    // Empty out the div so we can add whatever we want to it.
     cloned.firstChild.remove();
 
-    //
-    // Add our link
-    const link = document.createElement('a');
-    link.href = `https://ainfosys.itglue.com/links/connectwise/org/${companyId}`;
-    link.target = "_blank";
-    // TODO use image from repo
-    link.innerHTML = "<img src='https://www.google.com/s2/favicons?sz=64&domain=itglue.com' style='height:16px; width=16px'> IT Glue";
+    // TODO add icon to repo
+    const html = `<span>
+                    <img src='https://www.google.com/s2/favicons?sz=64&domain=itglue.com' style='height:18px; '>
+                    <a href="https://ainfosys.itglue.com/links/connectwise/org/${companyId}" target="_blank" style="vertical-align:center">IT Glue</a>
+                  </span>`;
+    cloned.innerHTML = html;
 
-    cloned.appendChild(link);
-
-    // Makes things redraw correctly so that all of the icons are aligned correctly again
-    originalButton.style.left = "469px";
-    applied = true;
+    customLinksAdded = true;
 }
 
 // #endregion
@@ -201,7 +187,7 @@ function MainLogic()
 
     CreateNewTabLinks();
     CreateCopyTeamsLinkButton();
-    AddITGlueButtonToToolbar();
+    AddToolbarCustomLinks();
 
     // const end = performance.now();
     // console.log(`Took ${(end - start).toFixed(3)} ms`);

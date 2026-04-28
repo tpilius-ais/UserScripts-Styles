@@ -163,17 +163,17 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         padding-top: 18px;
     }
 
-    /* Hiding top toolbar buttons that aren't really helpful */
+    /* Hiding top toolbar buttons that aren't really used */
     .cw_ToolbarButton_Dispatch,
-    /* .cw_ToolbarButton_Time, */
+    .cw_ToolbarButton_Time,
     .x-toolbar .cw_ToolbarButton_New,
     .cw_PsaHistoryButton,
     .cw_PsaMoreMenuButton,
-    /* Hides "Share" drop down */
+    .cw_PsaLinksMenuButton,
+    /* "Share" drop down */
     .mm_toolbarHolder .cw_CwTextButton,
-    /* TODO doesn't always work if you start on a tab other than "ticket" and refresh. */
     /*  "Pop Out in New Window" */
-    .cw_CwIconButton > #gwt-uid-111
+    .cw_CwIconButton:has(path[d^="M22.6 22.8L35.2"])
     {
         display: none !important;
     }

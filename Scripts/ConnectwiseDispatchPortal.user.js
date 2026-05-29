@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         ConnectWise - Dispatch Portal Tweaks
-// @version      1.0.0
+// @version      1.1.0
 // @description  TODO
 // @author       Tim Pilius
 // @match        https://na.myconnectwise.net/*
 // @icon         https://www.connectwise.com/globalassets/media/logos/company-logos/connectwise-logo-favicon.png
 // @top-level-await
+// @noframes     This prevents the script from being loaded twice due to CW's iframes
 // ==/UserScript==
 
 // TODO document what it does

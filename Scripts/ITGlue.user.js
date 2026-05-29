@@ -1,11 +1,18 @@
 // ==UserScript==
 // @name         IT Glue Tweaks
 // @author       tpilius-ais
-// @version      0.2.0
+// @version      0.3.0
 // @description  // TODO
 // @match        https://ainfosys.itglue.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=itglue.com
+// @top-level-await
+// @require      https://cdn.jsdelivr.net/npm/toastify-js
+// @resource     toastifyCSS https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
+// @grant        GM_addStyle
+// @grant        GM_getResourceText
 // ==/UserScript==
+
+
 // TODO document both here and on the readme
 // TODO Play around with replacing tags like [SPAM FILTER] with a color coded badge.
 'use strict';
@@ -19,28 +26,11 @@ function SetTabTitle()
         const orgName = GetFormattedOrgName();
         document.title = document.title.replace("Documents - ", `${orgName} - `);
     }
-    // Removes IT Glue from the tab since I already know what site I'm on.
+    // Prepends the client name and removes 'IT Glue' from the tab title.
     if (document.title.includes(" — IT Glue"))
     {
-        document.title = document.title.replace(" — IT Glue", "");
-    }
-
-    // Prepends the client name to these pages
-    // TODO figure out if this could be more generic so it applies to all of the pages
-    if (document.title === "Documents")
-    {
         const orgName = GetFormattedOrgName();
-        document.title = `${orgName} - Documents`;
-    }
-    if (document.title === "Passwords")
-    {
-        const orgName = GetFormattedOrgName();
-        document.title = `${orgName} - Passwords`;
-    }
-    if (document.title === "Printing")
-    {
-        const orgName = GetFormattedOrgName();
-        document.title = `${orgName} - Printing`;
+        document.title = `${orgName} - ${document.title.replace(" — IT Glue", "")}`;
     }
 }
 
@@ -54,7 +44,7 @@ function CreateCopyTeamsLinkButton()
         return;
     }
 
-    let pageHeaderContainer = document.querySelector(".react-page-header__left");
+    const pageHeaderContainer = document.querySelector(".react-page-header__left");
     if (!pageHeaderContainer)
     {
         // Nothing to do since we couldn't find the header
@@ -62,30 +52,41 @@ function CreateCopyTeamsLinkButton()
     }
 
     // Remove the old button and readd it.  This is so that it will always be to the right of the edit button.
-    let existingButton = pageHeaderContainer.querySelector('button.teams-button');
+    const existingButton = pageHeaderContainer.querySelector('button.teams-button');
     if (existingButton !== null)
     {
         existingButton.remove();
     }
 
     // Create the button
-    const copyBtn = document.createElement('button');
-    // TODO swap this over to a the copy hosted in this repo
-    copyBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg" alt="Teams"> Copy Link for Teams`;
-    copyBtn.classList.add("teams-button");
+    const copyButton = document.createElement('button');
+    copyButton.innerHTML = `<img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Microsoft%20Teams%20Icon.svg" alt="Teams"> Copy Link for Teams`;
+    copyButton.classList.add("teams-button");
 
     // Insert button after the div
-    pageHeaderContainer.appendChild(copyBtn);
+    pageHeaderContainer.appendChild(copyButton);
 
     // Add click event
-    copyBtn.addEventListener('click', () =>
+    copyButton.addEventListener('click', () =>
     {
+        // Copying to clipboard
         const title = document.querySelector("h1.doc-title--view").innerText;
         const html = `<html><body><a href="${window.location.href}">${GetFormattedOrgName()} - ${title}</a></body></html>`;
 
         const blob = new Blob([html], { type: "text/html" });
         const clipboardItem = new ClipboardItem({ "text/html": blob });
         navigator.clipboard.write([clipboardItem]);
+
+        // Showing toast notification so user knows it worked.
+        Toastify({
+            text: "Copied!",
+            duration: 1000,
+            position: "left",
+            offset:
+            {
+                x: copyButton.getBoundingClientRect().left + 40,
+            },
+        }).showToast();
     });
 }
 
@@ -97,37 +98,54 @@ function CreateCopyTeamsLinkButton_Passwords()
         return;
     }
 
-    let sidebarButtonsContainer = document.querySelector(".sidebar-buttons-section .buttons");
+    const sidebarButtonsContainer = document.querySelector(".sidebar-buttons-section .buttons");
     if (!sidebarButtonsContainer)
     {
         return;
     }
 
     // Remove the old button and readd it.  This is so that it will always be to the right of the edit button.
-    let existingButton = sidebarButtonsContainer.querySelector('button.teams-button');
+    const existingButton = sidebarButtonsContainer.querySelector('button.teams-button');
     if (existingButton !== null)
     {
         existingButton.remove();
     }
 
     // Create the button
-    const copyBtn = document.createElement('button');
-    // TODO swap this over to the copy hosted in this repo
-    copyBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg" alt="Teams"> Copy Link for Teams`;
-    copyBtn.classList.add("teams-button");
+    const copyButton = document.createElement('button');
+    copyButton.innerHTML = `<img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Microsoft%20Teams%20Icon.svg" alt="Teams"> Copy Link for Teams`;
+    copyButton.classList.add("teams-button");
 
     // Insert button after the div
-    sidebarButtonsContainer.appendChild(copyBtn);
+    sidebarButtonsContainer.appendChild(copyButton);
 
     // Add click event
-    copyBtn.addEventListener('click', () =>
+    copyButton.addEventListener('click', () =>
     {
-        const title = document.querySelector(".page-header.qa-page-header.h1").innerText;
-        const html = `<html><body><a href="${window.location.href}">${GetFormattedOrgName()} - ${title}</a></body></html>`;
+        // TODO this is hideous
+        const div = document.querySelector(".page-header.qa-page-header.h1");
+        // Stripping out the extra text that gets included without affecting the original.
+        const headerText = Array
+            .from(div.childNodes)
+            .filter((node) => node.nodeType === Node.TEXT_NODE)
+            .map((node) => node.textContent.trim())
+            .join("");
 
+        const html = `<html><body><a href="${window.location.href}">${GetFormattedOrgName()} - ${headerText}</a></body></html>`;
         const blob = new Blob([html], { type: "text/html" });
         const clipboardItem = new ClipboardItem({ "text/html": blob });
         navigator.clipboard.write([clipboardItem]);
+
+        // Showing toast notification so user knows it worked.
+        Toastify({
+            text: "Copied!",
+            duration: 1000,
+            position: "left",
+            offset:
+            {
+                x: copyButton.getBoundingClientRect().left + 40,
+            },
+        }).showToast();
     });
 }
 
@@ -136,15 +154,21 @@ function CreateCopyTeamsLinkButton_Passwords()
 function GetFormattedOrgName()
 {
     const orgMap = {
+        5199378: "Acorn",
+        5198948: "AFP",
         5185248: "AIS",
+        5198950: "BI",
+        5199303: "Bryant",
         5524967: "CCA",
+        5198956: "Costello",
         5198997: "Engel Law",
         6038230: "FFCU",
         6213647: "FMDT",
+        8609516: "GSG",
         5199266: "Ingerman",
         5198977: "Naiman",
         5199276: "PK Law",
-        5870388: "SBWDlaw",
+        5870388: "SBWD",
         5199304: "Waranch",
         5198991: "WEA"
     };
@@ -176,7 +200,9 @@ function ReplaceFolderIcons()
     });
 }
 
-// TODO comment
+// Loading toastify CSS, since there is no built in support with @require
+GM_addStyle(GM_getResourceText("toastifyCSS"));
+
 function UpdateLogic()
 {
     SetTabTitle();
@@ -187,3 +213,8 @@ function UpdateLogic()
 // Will try to update the title any time that it is changed on page navigation
 const observer = new MutationObserver(UpdateLogic);
 observer.observe(document.querySelector('title'), { childList: true });
+
+window.addEventListener('load', () =>
+{
+    SetTabTitle();
+});

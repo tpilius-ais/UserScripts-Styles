@@ -14,7 +14,10 @@ export default defineConfig([
             globals:
             {
                 ...globals.browser,
-                unsafeWindow: "readonly"
+                unsafeWindow: "readonly",
+                GM_addStyle: "readonly",
+                GM_getResourceText: "readonly",
+                Toastify: "readonly"
             }
         },
         rules:
@@ -58,7 +61,14 @@ export default defineConfig([
             "max-lines-per-function": "off",
             "prefer-rest-params": "off",
             "prefer-destructuring": "off",
-            "no-invalid-this": "off"
+            "no-invalid-this": "off",
+            // Literally no reason for this limit
+            "max-lines": "off",
+
+            // Don't understand this one, should come back to it later
+            "prefer-named-capture-group": "off",
+            // Don't understand this one either.
+            "require-unicode-regexp": "off"
         }
     }
 ]);

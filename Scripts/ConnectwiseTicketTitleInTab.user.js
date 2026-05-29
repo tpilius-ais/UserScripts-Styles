@@ -1,43 +1,34 @@
 // ==UserScript==
 // @name         ConnectWise - Ticket Description in Title
-// @version      0.0.2
+// @author       tpilius-ais
+// @version      1.0.0
 // @description  TODO
-// @author       Tim Pilius
 // @match        https://na.myconnectwise.net/*
 // @icon         https://www.connectwise.com/globalassets/media/logos/company-logos/connectwise-logo-favicon.png
-// @top-level-await
+// @noframes     This prevents the script from being loaded twice due to CW's iframes
+// @require      https://cdn.jsdelivr.net/npm/toastify-js
+// @resource     toastifyCSS https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
+// @grant        GM_addStyle
+// @grant        GM_getResourceText
 // ==/UserScript==
 
 'use strict';
-// TODO rename this script in both @name and on the file system.  Anyone who had this installed will need to delete + reinstall the script
-// TODO try to setup the mutation observer one more time
-// TODO Figure out why the CPU usage is so high on this.  Might be related to the grid observers in the other connectwise script.
+
+// TODO Rename this.  It is more of a ticket view script more than the tab title at this point.
+// TODO add a link to Ninja to show the company's devices in the toolbar.  You will need to create a new group in Ninja which can be done after adding
+//      a search filter and then clicking "Save group".  Example url https://app.ninjarmm.com/#/group/247.  Will need to create a manual mapping table for
+//      lookup.
+//      Example url https://app.ninjarmm.com/#/customerDashboard/19/maintenance
+//      Possibly suggest here https://ninjarmm.zendesk.com/hc/en-us/community/topics/360001187411-General-Discussion
 
 let companyId = 0;
 // This is the ID of the user who submitted the ticket.
 let ticketUserId = 0;
 const connectwiseUrlBase = "https://na.myconnectwise.net/v4_6_release/services/system_io/router/openrecord.rails?locale=en_US&companyName=ainfosys";
 
-function MainLogic()
-{
-    const start = performance.now();
-    SetTabTitle();
+// #region Functions
 
-    // These should only be run on the service ticket page
-    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
-    {
-        return;
-    }
-    CreateNewTabLinks();
-    CreateCopyTeamsLinkButton();
-
-    // const end = performance.now();
-    // console.log(`Took ${(end - start).toFixed(2)} ms`);
-}
-
-setInterval(MainLogic, 3000);
-
-// TODO maybe break this out into another script.  Or just combine everything connectwise related into one script.
+// TODO consider breaking this out into its own script.  Used on more than one page.
 function SetTabTitle()
 {
     // Add company name to tab title.
@@ -66,8 +57,7 @@ function SetTabTitle()
     }
 }
 
-// TODO rename, absolutely horrible name.
-// TODO comment
+// TODO rename, absolutely horrible name.  Comment as well.
 function CreateNewTabLinks()
 {
     // TODO comment
@@ -106,37 +96,46 @@ function CreateNewTabLinks()
 // The link can then be pasted into things like Teams and IT Glue, where it will keep the formatting.
 function CreateCopyTeamsLinkButton()
 {
+    // Only continue if we haven't already added the button
     const ticketTitleElement = document.querySelector(".gwt-Label.mm_label.GMDB3DUBDDL.detailLabel.cw_CwLabel");
-    if (!ticketTitleElement)
-    {
-        return;
-    }
-
-    if (ticketTitleElement.querySelector('button') !== null)
+    if (!ticketTitleElement || document.querySelector('.teams-button') !== null)
     {
         return;
     }
 
     // Create the button
-    const copyBtn = document.createElement('button');
-    // TODO swap this over to the copy hosted in this repo
-    copyBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg" alt="Teams"> Copy Link for Teams`;
-    copyBtn.classList.add("teams-button");
-    copyBtn.style.marginLeft = '10px';
+    const copyButton = document.createElement('button');
+    copyButton.innerHTML = `<img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Microsoft%20Teams%20Icon.svg" alt="Teams"> Copy Link for Teams`;
+    copyButton.classList.add("teams-button");
+    copyButton.style.marginLeft = '10px';
 
-    // Insert button after the div
-    ticketTitleElement.appendChild(copyBtn);
-
-    // Add click event
-    copyBtn.addEventListener('click', () =>
+    // Adding click event that will copy the formatted link to the clipboard and show a toast notification
+    copyButton.addEventListener('click', () =>
     {
+        // Copying to clipboard
         const summary = document.querySelector(".gwt-Label.mm_label.GMDB3DUBDDL.detailLabel.cw_CwLabel").childNodes[0].data;
         const html = `<html><body><a href="${window.location.href}">${summary}</a></body></html>`;
         const blob = new Blob([html], { type: "text/html" });
         const clipboardItem = new ClipboardItem({ "text/html": blob });
         navigator.clipboard.write([clipboardItem]);
+
+        // Showing toast notification to right side of button so user knows it worked.
+        Toastify({
+            text: "Copied!",
+            duration: 1000,
+            position: "left",
+            offset:
+            {
+                x: copyButton.getBoundingClientRect().right
+            },
+        }).showToast();
     });
+
+    // Insert button after the div
+    ticketTitleElement.appendChild(copyButton);
 }
+
+// #endregion
 
 // Intercepts requests the browser makes, and stores the results for our use later.
 const open = XMLHttpRequest.prototype.open;
@@ -159,3 +158,22 @@ XMLHttpRequest.prototype.open = function ()
     });
     open.apply(this, arguments);
 };
+// Loading toastify CSS, since there is no built in support with @require
+GM_addStyle(GM_getResourceText("toastifyCSS"));
+
+function MainLogic()
+{
+    SetTabTitle();
+
+    // These should only be run on the service ticket page
+    if (!(window.location.href.includes("ServiceTicket") || window.location.href.includes("ServiceFV")))
+    {
+        return;
+    }
+
+    CreateNewTabLinks();
+    CreateCopyTeamsLinkButton();
+    AddToolbarCustomLinks();
+}
+
+setInterval(MainLogic, 3000);

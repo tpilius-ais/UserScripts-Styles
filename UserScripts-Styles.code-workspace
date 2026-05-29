@@ -1,11 +1,14 @@
 {
-    "folders": [
+    "folders":
+    [
         {
             "path": "."
         }
     ],
-    "settings": {
-        "cSpell.words": [
+    "settings":
+    {
+        "cSpell.words":
+        [
             "ainfosys",
             "connectwise",
             "Engel",
@@ -16,9 +19,14 @@
             "Kaseya",
             "Naiman",
             "SBWD",
+            "Toastify",
             "userscripts",
             "Violentmonkey",
             "Waranch"
-        ]
+        ],
+        "search.exclude":
+        {
+            "**/*.svg": true
+        }
     }
 }

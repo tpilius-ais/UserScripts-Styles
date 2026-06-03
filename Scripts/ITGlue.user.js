@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IT Glue Tweaks
 // @author       tpilius-ais
-// @version      0.3.0
+// @version      0.4.0
 // @description  // TODO
 // @match        https://ainfosys.itglue.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=itglue.com
@@ -161,6 +161,7 @@ function GetFormattedOrgName()
         5199303: "Bryant",
         5524967: "CCA",
         5198956: "Costello",
+        9121846: "DIA",
         5198997: "Engel Law",
         6038230: "FFCU",
         6213647: "FMDT",
@@ -170,7 +171,8 @@ function GetFormattedOrgName()
         5199276: "PK Law",
         5870388: "SBWD",
         5199304: "Waranch",
-        5198991: "WEA"
+        5198991: "WEA",
+        8129780: "WPG"
     };
 
     const orgId = unsafeWindow.dvCurrent.organization.id;

@@ -2,7 +2,7 @@
 @name           IT Glue Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.4.0
+@version        0.5.0
 @description    Overhauls the interface design of IT Glue to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -83,23 +83,42 @@
         border-radius: 4px;
         font-size: 13px;
         font-weight: 500;
+
+        &:hover
+        {
+            background-color: #464775;
+        }
+
+        /* Makes the button appear to be pushed inwards when clicking it */
+        &:active
+        {
+            transform: scale(0.95);
+        }
+
+        /* Resizes icon */
+        & img
+        {
+            width: 16px;
+            height: 16px;
+        }
     }
 
-    .teams-button:hover
+    /* Hides password strength box */
+    .row-with-copy:has(.smart-audit__password-strength-info)
     {
-        background-color: #464775;
+        display: none !important;
     }
 
-    /* Makes the button appear to be pushed inwards when clicking it */
-    .teams-button:active
+    /* Hides password strength box on client's Home page  */
+    .smart-assist-widget-node__password-strength
     {
-        transform: scale(0.95);
+        display: none !important;
     }
 
-    .teams-button img
+    /* Hides AI button that shows up below "Related Items" */
+    .copilot__sidebar
     {
-        width: 16px;
-        height: 16px;
+        display: none !important;
     }
 }
 
@@ -125,6 +144,13 @@
     {
         margin-top: 20px;
     }
+
+    /* TODO make this larger again. */
+    /* h3,
+    h4
+    {
+        font-size: 18px !important;
+    } */
 
 }
 
@@ -159,13 +185,19 @@ regexp("^.*(itglue).*(passwords).*")
     {
         background-color: #FCE8E6;
     }
+
+    /* Colorizing archived items */
+    tr:has(i.fa-archive)
+    {
+        background-color: lightblue !important;
+    }
 }
 
 /* #region Apps & Services */
 @-moz-document regexp("^.*(itglue).*(assets).*")
 {
 
-    /* Modifications for anything under Apps & Services */
+    /* These apply to things like User Onboarding/Offboarding, Printers, Applications, File Sharing, */
     dl
     {
         max-width: 500px;
@@ -201,7 +233,8 @@ regexp("^.*(itglue).*(passwords).*")
     }
 
     .render-generic,
-    .render-text
+    .render-text,
+    .password
     {
         background: #fff;
         border: 1px solid #e0e0e0;
@@ -209,15 +242,22 @@ regexp("^.*(itglue).*(passwords).*")
         padding: 6px 10px;
     }
 
-    .footer
+    /* Hides "Show who has access to this XXXX" at the bottom */
+    .resource-access
     {
-        border-top: 1px solid #e5e5e5;
+        display: none !important;
     }
 
-    .resource-access a
+    /* Increases the height of the show password button and copy password button */
+    .show-password
     {
-        color: #0078d4;
-        text-decoration: none;
+        height: 30px !important;
+    }
+
+    button.password-copy
+    {
+        height: 30px !important;
+        width: 30px !important;
     }
 }
 

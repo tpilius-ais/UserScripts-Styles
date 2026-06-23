@@ -1,0 +1,16 @@
+/* ==UserStyle==
+@name           Update test script
+@namespace      tpilius-ais
+@author         tpilius-ais
+@version        1.0.0
+@description    Test
+==/UserStyle== */
+
+
+@-moz-document domain("ainfosys.itglue.com")
+{
+    .sample
+    {
+        background-color: aliceblue;
+    }
+}

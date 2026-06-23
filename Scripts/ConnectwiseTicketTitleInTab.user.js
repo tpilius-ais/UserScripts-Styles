@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ConnectWise - Ticket Description in Title
 // @author       tpilius-ais
-// @version      1.1.0
+// @version      1.2.0
 // @description  TODO
 // @match        https://na.myconnectwise.net/*
 // @icon         https://www.connectwise.com/globalassets/media/logos/company-logos/connectwise-logo-favicon.png
@@ -166,23 +166,23 @@ function AddToolbarCustomLinks()
 
     // Empty out the div so we can add whatever we want to it.
     cloned.firstChild.remove();
-
-    const html = `<span class="custom-toolbar-button">
+    // TODO cipp icon not showing up for adam
+    const html = `<span id="itglue-button" class="custom-toolbar-button">
                     <a href="https://ainfosys.itglue.com/links/connectwise/org/${companyId}" target="_blank">
                         <img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/ITGlue.png"> IT Glue
                     </a>
                   </span>
-                  <span class="custom-toolbar-button">
-                    <a href="https://admin.cloud.microsoft/?delegatedOrg=${emailDomain}" target="_blank">
+                  <span id="m365-portal-button" class="custom-toolbar-button">
+                    <a href="https://admin.cloud.microsoft/?delegatedOrg=${emailDomain}#/users" target="_blank">
                         <img src='https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/M365.ico'> M365 Admin
                     </a>
                   </span>
-                  <span class="custom-toolbar-button">
-                    <a href="https://admin.cloud.microsoft/exchange?delegatedOrg=${emailDomain}" target="_blank">
+                  <span id="exchange-portal-button" class="custom-toolbar-button">
+                    <a href="https://admin.cloud.microsoft/exchange?delegatedOrg=${emailDomain}#/mailboxes" target="_blank">
                         <img src='https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/Exchange.ico'> Exchange Admin
                     </a>
                   </span>
-                  <span class="custom-toolbar-button">
+                  <span id="cipp-button" class="custom-toolbar-button">
                     <a href="https://cipp.ainfosys.com/?tenantFilter=${emailDomain}" target="_blank">
                         <img src='https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/CIPP.ico'> CIPP
                     </a>

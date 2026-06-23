@@ -2,7 +2,7 @@
 @name           Update test script
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        1.0.0
+@version        1.1.0
 @description    Test
 ==/UserStyle== */
 
@@ -11,6 +11,6 @@
 {
     .sample
     {
-        background-color: aliceblue;
+        background-color: red;
     }
 }

@@ -2,7 +2,7 @@
 @name           IT Glue Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.5.0
+@version        0.6.0
 @description    Overhauls the interface design of IT Glue to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -23,7 +23,7 @@
     #react-main .sidebar .sidebar-section,
     .sidebar
     {
-        background-color: #d9d9d9 !important;
+        background-color: light-dark(#d9d9d9, #262c3b) !important;
     }
 
     /* Fixes floating horizontal scroll bar at the bottom of the screen */
@@ -68,7 +68,6 @@
         border-color: #B83A37 !important;
     }
 
-
     /* Adds styling to the custom "Copy Link for Teams" button */
     .teams-button
     {
@@ -104,17 +103,9 @@
     }
 
     /* Hides password strength box */
-    .row-with-copy:has(.smart-audit__password-strength-info)
-    {
-        display: none !important;
-    }
-
+    .row-with-copy:has(.smart-audit__password-strength-info),
     /* Hides password strength box on client's Home page  */
-    .smart-assist-widget-node__password-strength
-    {
-        display: none !important;
-    }
-
+    .smart-assist-widget-node__password-strength,
     /* Hides AI button that shows up below "Related Items" */
     .copilot__sidebar
     {
@@ -145,12 +136,27 @@
         margin-top: 20px;
     }
 
-    /* TODO make this larger again. */
-    /* h3,
+    .section-container.editor-container
+    {
+        margin-bottom: 0px !important;
+    }
+
+    /* Makes the various headers larger because they're too small in the first place */
+    h1
+    {
+        font-size: 30px !important;
+    }
+
+    h2
+    {
+        font-size: 26px !important;
+    }
+
+    h3,
     h4
     {
         font-size: 18px !important;
-    } */
+    }
 
 }
 
@@ -193,28 +199,28 @@ regexp("^.*(itglue).*(passwords).*")
     }
 }
 
-/* #region Apps & Services */
+/* #region Apps & Services - These apply to things like User Onboarding/Offboarding, Printers, Applications, File Sharing */
 @-moz-document regexp("^.*(itglue).*(assets).*")
 {
 
-    /* These apply to things like User Onboarding/Offboarding, Printers, Applications, File Sharing, */
+    /* TODO mess with converting to a two column layout */
     dl
     {
         max-width: 500px;
-        background: #fafafa;
-        border: 1px solid #ddd;
+        background: light-dark(#fafafa, #1c2026f2);
+        border: 1px solid light-dark(#ddd, #3a414b);
         border-radius: 12px;
         padding: 20px 24px;
         font-family: "Segoe UI", Roboto, sans-serif;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 6px #0000000d;
     }
 
     h3.render-header
     {
         font-size: 28px;
         font-weight: 500;
-        color: #0a4a8b;
-        border-bottom: 2px solid #e5e5e5;
+        color: light-dark(#0a4a8b, #61afef) !important;
+        border-bottom: 2px solid light-dark(#e5e5e5, #3a414b) !important;
         padding-bottom: 6px;
         margin-top: 20px;
         margin-bottom: 10px;
@@ -223,7 +229,7 @@ regexp("^.*(itglue).*(passwords).*")
     dt.render-label
     {
         font-weight: 600;
-        color: #555;
+        color: light-dark(#555, #9aa7b5) !important;
         margin-bottom: 5px !important;
     }
 
@@ -236,10 +242,21 @@ regexp("^.*(itglue).*(passwords).*")
     .render-text,
     .password
     {
-        background: #fff;
-        border: 1px solid #e0e0e0;
+        background: light-dark(#fff, #252a31);
+        color: light-dark(#e4e8ec, #9aa7b5) !important;
+
+        border: 1px solid light-dark(#e0e0e0, #3a414b);
         border-radius: 6px;
         padding: 6px 10px;
+    }
+
+    /* TODO is this something I should keep? */
+    .render-generic:hover,
+    .render-text:hover,
+    .password:hover
+    {
+        border-color: #61afef;
+        transition: border-color 0.15s ease;
     }
 
     /* Hides "Show who has access to this XXXX" at the bottom */
@@ -248,7 +265,9 @@ regexp("^.*(itglue).*(passwords).*")
         display: none !important;
     }
 
+    /* These apply to wifi entries.  Example: https://ainfosys.itglue.com/5185248/assets/219274-wireless/records/24033826 */
     /* Increases the height of the show password button and copy password button */
+    /* TODO looks wrong on dark mode */
     .show-password
     {
         height: 30px !important;

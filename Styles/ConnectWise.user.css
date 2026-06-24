@@ -126,15 +126,18 @@
 @-moz-document url-prefix("https://na.myconnectwise.net/v2025_1/timeexpensemodule.html")
 {
 
-    /* Colors dropdown statuses that must be changed. */
+    /* Colors dropdown statuses + time field that must be changed in order to save entry. */
     input[value="MUST CHANGE"],
-    input[value="TICKET UPDATE REQUIRED"]
+    input[value="TICKET UPDATE REQUIRED"],
+    input.cw_endTime[value=""]
     {
         background-color: lightcoral;
     }
 
     /* Hides "Agreement" field */
-    tr.pod-element-row:has(div[title="Agreement"])
+    tr.pod-element-row:has(div[title="Agreement"]),
+    /* Hides Add Internal Time not that I don't think anyone uses. */
+    .cw_btnAddInternal
     {
         display: none !important;
     }
@@ -378,7 +381,8 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
     /* Hides Impact field */
     .cw_impact,
     /* Hides the "Known Issue Link" field */
-    tr.pod-element-row:has(div.cw_Known_Issue_Link)
+    tr.pod-element-row:has(div.cw_Known_Issue_Link),
+    tr.pod-element-row:has(div[title="Agreement"])
     {
         display: none !important;
     }

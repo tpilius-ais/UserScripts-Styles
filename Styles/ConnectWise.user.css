@@ -2,7 +2,7 @@
 @name           ConnectWise Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.5.0
+@version        0.6.0
 @description    Overhauls the interface design of ConnectWise to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -387,9 +387,10 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         display: none !important;
     }
 
-    /* Hides the "Customer updated" checkbox */
-    .TicketNote-customerUpdatedColumn
+    /* TODO keep playing around with this Hides the "Customer updated" checkbox   */
+    .TicketNote-customerUpdatedColumn:has(.CwCheckBox-checkbox)
     {
-        display: none !important;
+        /* background-color: red !important; */
+        /* display: none !important; */
     }
 }

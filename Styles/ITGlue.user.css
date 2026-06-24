@@ -2,7 +2,7 @@
 @name           IT Glue Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.6.0
+@version        0.7.0
 @description    Overhauls the interface design of IT Glue to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -243,7 +243,7 @@ regexp("^.*(itglue).*(passwords).*")
     .password
     {
         background: light-dark(#fff, #252a31);
-        color: light-dark(#e4e8ec, #9aa7b5) !important;
+        color: light-dark(#222222, #9aa7b5) !important;
 
         border: 1px solid light-dark(#e0e0e0, #3a414b);
         border-radius: 6px;

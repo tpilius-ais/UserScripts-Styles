@@ -14,6 +14,7 @@
 // TODO this whole thing needs to be cleaned up in general
 // TODO measure performance and optimize if needed
 // TODO Adam and Aaron might have to delete their existing version of this
+// TODO add a checkbox to toggle desktop notifications
 
 'use strict';
 
@@ -75,6 +76,27 @@ function UpdateTableRows()
     // console.log(`Took ${(end - start).toFixed(2)} ms`);
 }
 
+// TODO comment
+function FindColumnIndex(columnName)
+{
+    if (columnMap.size !== 0)
+    {
+        return columnMap.get(columnName);
+    }
+
+    const columns = document.querySelectorAll("div.cw-ml-header tr.GMDB3DUBCFI:nth-child(1) td");
+    for (var i = 0; i < columns.length; i++)
+    {
+        const name = columns[i].querySelector("span").innerText;
+        columnMap.set(name, i);
+    }
+    return columnMap.get(columnName);
+}
+
+// #endregion Functions
+
+// #region Notification logic
+
 let previousRows = [];
 let firstRun = true;
 // TODO make this click the search button every minute to make sure the board is updated as fast as possible.
@@ -114,7 +136,6 @@ function MonitorBoardTickets()
 }
 
 // TODO comment.  Crappy name and should be refactored.
-// TODO make this only notify if new tickets are added or if the status of an existing one changed.
 function ShouldNotify(parsedRows)
 {
     // If there are no rows then why are we notifying?
@@ -156,8 +177,6 @@ function ShouldNotify(parsedRows)
         SendNotification("There are new tickets to look at!");
         return;
     }
-
-    //TODO If any of the current ticket statuses are different than the previous check -> notify
 }
 
 //TODO comment
@@ -184,31 +203,17 @@ class TableRow
     }
 }
 
-// TODO comment
-function FindColumnIndex(columnName)
-{
-    if (columnMap.size !== 0)
-    {
-        return columnMap.get(columnName);
-    }
 
-    const columns = document.querySelectorAll("div.cw-ml-header tr.GMDB3DUBCFI:nth-child(1) td");
-    for (var i = 0; i < columns.length; i++)
-    {
-        const name = columns[i].querySelector("span").innerText;
-        columnMap.set(name, i);
-    }
-    return columnMap.get(columnName);
-}
+// #endregion
 
 //TODO seconds
 // TODO comment that this needs to be awaited
-function delay(ms)
+function delay(seconds)
 {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
 
-// #endregion Functions
+
 
 async function TrySetupGridObserver()
 {
@@ -226,7 +231,7 @@ async function TrySetupGridObserver()
         let target;
         while (!(target = document.querySelector(".GMDB3DUBBXF.mm_grid")))
         {
-            await delay(1000);
+            await delay(1);
         }
         // Sets up actions that run anytime the grid updates
         const observer = new MutationObserver(() =>
@@ -254,7 +259,7 @@ async function TrySetupGridObserver()
 }
 
 // Will attempt to re-setup things anytime a link is clicked to a different page
-window.addEventListener('popstate', async function ()
+window.addEventListener('popstate', function ()
 {
     TrySetupGridObserver();
 });

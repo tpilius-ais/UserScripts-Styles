@@ -32,6 +32,7 @@ function SetTabTitle()
         const orgName = GetFormattedOrgName();
         document.title = `${orgName} - ${document.title.replace(" — IT Glue", "")}`;
     }
+    // TODO add the printer name to the title
 }
 
 // Adds a button that will allow the user to easily copy a formatted link to use in Team, Notion, or elsewhere.

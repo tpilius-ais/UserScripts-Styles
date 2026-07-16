@@ -102,6 +102,7 @@ function MonitorBoardTickets()
     // Don't want to notify on first page load since its annoying.
     if (firstRun)
     {
+        console.log("first run");
         firstRun = false;
         return;
     }

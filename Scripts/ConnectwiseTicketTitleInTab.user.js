@@ -237,4 +237,64 @@ function MainLogic()
     AddToolbarCustomLinks();
 }
 
+// TODO Finish + refactor + performance + comment.
+// Use schlachman to test this
+function FindAndClickPopup()
+{
+    const start = performance.now();
+    const popups = document.querySelectorAll(".cw-gxt-wnd");
+
+    popups.forEach((popup) =>
+    {
+        const title = popup.querySelector('[id$="-label"]');
+        if (title?.textContent.trim() === "Status Note for Active*")
+        {
+            const button = popup.querySelector(".mm_button");
+            // button.click();
+        }
+    });
+    const end = performance.now();
+    console.log(`Took ${(end - start).toFixed(3)} ms`);
+}
+
+// const observer = new MutationObserver(() =>
+// {
+//     FindAndClickPopup();
+// });
+
+// observer.observe(document.body, { childList: true, subtree: true });
+
+const observer = new MutationObserver((mutations) =>
+{
+    const start = performance.now();
+
+    for (const mutation of mutations)
+    {
+        for (const node of mutation.addedNodes)
+        {
+            if (node.nodeType !== Node.ELEMENT_NODE)
+            {
+                continue;
+            }
+
+            if (node.parentElement === document.body && node.id.includes("x-auto-"))
+            {
+                console.log("Found popup");
+                const title = node.querySelector('[id$="-label"]');
+                if (title?.textContent.trim() === "Status Note for Active*")
+                {
+                    console.log("Found correct popup by title");
+                    const button = node.querySelector(".mm_button");
+                    button.click();
+                }
+            }
+        }
+    }
+
+    const end = performance.now();
+    console.log(`Took ${(end - start).toFixed(3)} ms`);
+});
+
+observer.observe(document.body, { childList: true, subtree: false });
+
 setInterval(MainLogic, 3000);

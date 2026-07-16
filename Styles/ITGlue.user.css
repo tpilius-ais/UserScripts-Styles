@@ -141,6 +141,13 @@
         margin-bottom: 0px !important;
     }
 
+    /* Makes the left hand ToC a little bit wider so you can read the items */
+    /* TODO test this on a laptop and other small monitors */
+    .toc.open
+    {
+        width: 200px !important;
+    }
+
     /* Makes the various headers larger because they're too small in the first place */
     h1
     {
@@ -157,7 +164,6 @@
     {
         font-size: 18px !important;
     }
-
 }
 
 /* #endregion */

@@ -127,6 +127,7 @@ function CreateCopyTeamsLinkButton()
         navigator.clipboard.write([clipboardItem]);
 
         // Showing toast notification to right side of button so user knows it worked.
+        // TODO this pops up and never goes away.
         Toastify({
             text: "Copied!",
             duration: 1000,

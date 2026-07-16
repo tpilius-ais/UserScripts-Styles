@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ConnectWise - Dispatch Portal Tweaks
-// @version      1.1.0
+// @version      1.2.0
 // @description  TODO
 // @author       Tim Pilius
 // @match        https://na.myconnectwise.net/*
@@ -10,11 +10,8 @@
 // ==/UserScript==
 
 // TODO document what it does
-// TODO should I just combine everything ConnectWise into one script and then have feature toggles?  Will need to rename script
-// TODO this whole thing needs to be cleaned up in general
-// TODO measure performance and optimize if needed
-// TODO Adam and Aaron might have to delete their existing version of this
-// TODO add a checkbox to toggle desktop notifications
+// TODO this probably needs to be broken up into multiple files once this has been moved over to an extension.  There are too many things that overlap on too many of
+//      CW's views.
 
 'use strict';
 
@@ -25,22 +22,19 @@ let columnMap = new Map();
 
 // Goes through all of the table rows and replaces the contents of each 'Ticket #' and 'Summary Description' cell with
 // a link to the ticket that can be middle clicked to open in a new tab
-function UpdateTableRows()
+function AddLinksToTableRows()
 {
     // Needs to be done every time in case the user navigates to a different page.  Each grid can potentially have a different column layout
     columnMap = new Map();
-    // const start = performance.now();
 
     // Finding all rows from the bottom table
-    let allRows = document.getElementsByClassName("cw-ml-row");
-
+    const allRows = document.getElementsByClassName("cw-ml-row");
     if (allRows.length === 0)
     {
-        console.log("No rows found, nothing to update.");
         return;
     }
 
-    for (var i = 0; i < allRows.length; i++)
+    for (let i = 0; i < allRows.length; i++)
     {
         const row = allRows[i];
 
@@ -71,12 +65,9 @@ function UpdateTableRows()
         descriptionLink.href = `${ticketUrl}`;
         descriptionLink.className = "";
     }
-
-    // const end = performance.now();
-    // console.log(`Took ${(end - start).toFixed(2)} ms`);
 }
 
-// TODO comment
+// Grids in CW can have their columns in any user defined order, so they won't always be a known order.  This will find a column's index by its title/name.
 function FindColumnIndex(columnName)
 {
     if (columnMap.size !== 0)
@@ -85,7 +76,7 @@ function FindColumnIndex(columnName)
     }
 
     const columns = document.querySelectorAll("div.cw-ml-header tr.GMDB3DUBCFI:nth-child(1) td");
-    for (var i = 0; i < columns.length; i++)
+    for (let i = 0; i < columns.length; i++)
     {
         const name = columns[i].querySelector("span").innerText;
         columnMap.set(name, i);
@@ -99,10 +90,10 @@ function FindColumnIndex(columnName)
 
 let previousRows = [];
 let firstRun = true;
-// TODO make this click the search button every minute to make sure the board is updated as fast as possible.
 function MonitorBoardTickets()
 {
     // This should only run on the dispatch schedule page, since this is where I keep track of tickets coming in.
+    // TODO figure out if I need to use the captured url here.
     if (!window.location.href.includes("DispatchSchedule"))
     {
         return;
@@ -115,11 +106,10 @@ function MonitorBoardTickets()
         return;
     }
 
-    //TODO might not need this logic just yet.
     const parsedRows = [];
     // Finding all rows from the bottom table, running through them and extract what info I need
-    let allRows = document.getElementsByClassName("cw-ml-row");
-    for (var i = 0; i < allRows.length; i++)
+    const allRows = document.getElementsByClassName("cw-ml-row");
+    for (let i = 0; i < allRows.length; i++)
     {
         const row = allRows[i];
 
@@ -138,6 +128,12 @@ function MonitorBoardTickets()
 // TODO comment.  Crappy name and should be refactored.
 function ShouldNotify(parsedRows)
 {
+    const notificationsEnabledCheckbox = document.querySelector("#notifications-enabled-checkbox");
+    if (notificationsEnabledCheckbox.checked === false)
+    {
+        return;
+    }
+
     // If there are no rows then why are we notifying?
     if (parsedRows.length === 0)
     {
@@ -179,7 +175,10 @@ function ShouldNotify(parsedRows)
     }
 }
 
-//TODO comment
+/**
+ * Sends a desktop notification with the specified message.
+ * @param {string} message
+ */
 async function SendNotification(message)
 {
     if (Notification.permission === 'default')
@@ -190,6 +189,48 @@ async function SendNotification(message)
     {
         new Notification('ConnectWise', { body: message });
     }
+}
+
+// TODO consider persisting this setting between page refreshes
+let notificationsCheckboxAdded = false;
+/**
+ * Creates a checkbox on the dispatch portal next to the search + clear buttons that allows you to disable desktop notifications if you no longer want to see them.
+ * @param {string} windowLocation This is the currently captured browser url, so that the url doesn't change while we're in the middle of running our logic.
+ */
+function AddEnableNotificationsCheckbox(windowLocation)
+{
+    // We only show notifications on the dispatch portal, so only show this button there.
+    if (!windowLocation.includes("DispatchSchedule"))
+    {
+        return;
+    }
+
+    if (notificationsCheckboxAdded)
+    {
+        return;
+    }
+
+    // Creating checkbox.  Defaults to notifications enabled when loading the page, that then require the user to disable them if they don't want notifications anymore.
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = "notifications-enabled-checkbox";
+    checkbox.checked = true;
+    checkbox.style.marginLeft = "150px";
+    checkbox.style.marginTop = "5px";
+    checkbox.style.marginRight = "5px";
+
+    const label = document.createElement("label");
+    label.htmlFor = "notifications-enabled-checkbox";
+    label.innerText = "Notifications Enabled";
+    label.title = "Enables/Disables desktop notifications when tickets are added/changed";
+
+    // Inserting it after the clear button
+    const clearButton = document.querySelector(".cw-toolbar-clear");
+    clearButton.after(checkbox);
+    checkbox.after(label);
+
+    notificationsCheckboxAdded = true;
+    console.log("added notifications checkbox");
 }
 
 // TODO give a better name
@@ -203,31 +244,32 @@ class TableRow
     }
 }
 
-
 // #endregion
 
-//TODO seconds
-// TODO comment that this needs to be awaited
+// Creates a promise that can be awaited in order to wait N seconds
 function delay(seconds)
 {
     return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
 
-
-
 async function TrySetupGridObserver()
 {
+    // Capturing the window location,  because it can change on us while these functions run.  Since these functions conditionally depend on knowing what page we're on,
+    // having them change from underneath us can produce unexpected results.
+    const windowLocation = window.location.href;
+
     // Setting up observer on grid view.  Will retry until we find it.
     // Only want to run on Dispatch Portal, Ticket Search, or Service Board pages
-    if (window.location.href.includes("DispatchSchedule")
-        || window.location.href.includes("ServiceSearchList")
-        || window.location.href.includes("ServiceBoard")
-        || window.location.href.includes("ContactServiceList")
-        || window.location.href.includes("CompanyServiceList")
-        || window.location.href.includes("routeTo=CompanyFV")
-        || window.location.href.includes("routeTo=ContactFV"))
+    if (windowLocation.includes("DispatchSchedule")
+        || windowLocation.includes("ServiceSearchList")
+        || windowLocation.includes("ServiceBoard")
+        || windowLocation.includes("ContactServiceList")
+        || windowLocation.includes("CompanyServiceList")
+        || windowLocation.includes("routeTo=CompanyFV")
+        || windowLocation.includes("routeTo=ContactFV"))
     {
         console.log("Trying to setup grid view observer...");
+
         let target;
         while (!(target = document.querySelector(".GMDB3DUBBXF.mm_grid")))
         {
@@ -236,33 +278,26 @@ async function TrySetupGridObserver()
         // Sets up actions that run anytime the grid updates
         const observer = new MutationObserver(() =>
         {
-            UpdateTableRows();
+            AddLinksToTableRows();
             MonitorBoardTickets();
         });
         observer.observe(target, { childList: true, subtree: true });
         console.log("Observing grid view for changes...");
 
         // Run these once on page load
-        UpdateTableRows();
+        AddLinksToTableRows();
         MonitorBoardTickets();
+        AddEnableNotificationsCheckbox(windowLocation);
 
-        // Setting up refresh button clicker.  To make sure that the grid is being updated even when it isn't in focus in its own tab.
-        // TODO should probably make the refresh timing configurable, and make this a bit more robust
-        // TODO this messes with the "dont notify on first page load" logic
+        // Setting automatic search button clicker, to make sure that the grid is being updated even if the dispatch portal isn't the currently focused tab.
+        // Currently clicks every 10 minutes.
         setInterval(() =>
         {
-            var element = document.querySelector(".cw-toolbar-search.cw-ml-search-button");
-            element.click();
-            console.log("Clicky clicky");
+            const searchButton = document.querySelector(".cw-toolbar-search.cw-ml-search-button");
+            searchButton.click();
         }, 10 * 60 * 1000);
     }
 }
-
-// Will attempt to re-setup things anytime a link is clicked to a different page
-window.addEventListener('popstate', function ()
-{
-    TrySetupGridObserver();
-});
 
 // Otherwise we will need to do the initial setup, like when we open a new tab
 TrySetupGridObserver();

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ConnectWise - Ticket Description in Title
 // @author       tpilius-ais
-// @version      1.2.0
+// @version      1.3.0
 // @description  TODO
 // @match        https://na.myconnectwise.net/*
 // @icon         https://www.connectwise.com/globalassets/media/logos/company-logos/connectwise-logo-favicon.png
@@ -158,7 +158,7 @@ function AddToolbarCustomLinks()
 
     // Looks like I do need to hijack one of the existing buttons in order to get things to layout properly
     const originalButton = document.querySelector(".cw_ToolbarButton_Help");
-    originalButton.style.left = "400px";
+    originalButton.style.left = "250px";
 
     // Stripping out original event handlers
     const cloned = originalButton.cloneNode(true);
@@ -166,7 +166,6 @@ function AddToolbarCustomLinks()
 
     // Empty out the div so we can add whatever we want to it.
     cloned.firstChild.remove();
-    // TODO cipp icon not showing up for adam
     const html = `<span id="itglue-button" class="custom-toolbar-button">
                     <a href="https://ainfosys.itglue.com/links/connectwise/org/${companyId}" target="_blank">
                         <img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/ITGlue.png"> IT Glue
@@ -184,7 +183,7 @@ function AddToolbarCustomLinks()
                   </span>
                   <span id="cipp-button" class="custom-toolbar-button">
                     <a href="https://cipp.ainfosys.com/?tenantFilter=${emailDomain}" target="_blank">
-                        <img src='https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/CIPP.ico'> CIPP
+                        <img src='https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/CIPP.png'> CIPP
                     </a>
                   </span>`;
     cloned.innerHTML = html;

@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         IT Glue Tweaks
 // @author       tpilius-ais
-// @version      0.4.0
+// @version      0.5.0
 // @description  // TODO
 // @match        https://ainfosys.itglue.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=itglue.com
 // @top-level-await
 // @require      https://cdn.jsdelivr.net/npm/toastify-js
+// @require      https://cdn.jsdelivr.net/gh/CoeJoder/waitForKeyElements.js@master/waitForKeyElements.js
 // @resource     toastifyCSS https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -150,6 +151,37 @@ function CreateCopyTeamsLinkButton_Passwords()
     });
 }
 
+// TODO comment
+function CreateCancelEditingButton()
+{
+    // Only adding this button if we are editing.
+    if (!(window.location.href.includes("version=draft") && window.location.href.includes("documentMode=edit")))
+    {
+        return;
+    }
+
+    const existingButton = document.querySelector('#cancelEditButton');
+    if (existingButton !== null)
+    {
+        return;
+    }
+
+    const publishButton = document.querySelector(".publish-doc");
+
+    const newButton = document.createElement("button");
+    newButton.type = "button";
+    newButton.textContent = "Cancel Editing";
+    newButton.classList.add("kaseya-ui-button", "button--secondary", "button--regular", "button--auto-width");
+    newButton.setAttribute("id", "cancelEditButton");
+
+    newButton.addEventListener("click", () =>
+    {
+        window.location.href = window.location.href.split("#")[0];
+    });
+
+    publishButton.parentNode.insertBefore(newButton, publishButton);
+}
+
 // Takes Organization names that are very long and formats them down into acronyms,
 // so that the org name doesn't hide the document title in the tab text.
 function GetFormattedOrgName()
@@ -161,13 +193,16 @@ function GetFormattedOrgName()
         5198950: "BI",
         5199303: "Bryant",
         5524967: "CCA",
+        6365203: "Chambers",
         5198956: "Costello",
         9121846: "DIA",
+        5199384: "Dunn's",
         5198997: "Engel Law",
         6038230: "FFCU",
         6213647: "FMDT",
         8609516: "GSG",
         5199266: "Ingerman",
+        5199013: "Mack",
         5198977: "Naiman",
         5199276: "PK Law",
         5870388: "SBWD",
@@ -211,6 +246,7 @@ function UpdateLogic()
     SetTabTitle();
     CreateCopyTeamsLinkButton();
     CreateCopyTeamsLinkButton_Passwords();
+    CreateCancelEditingButton();
 }
 
 // Will try to update the title any time that it is changed on page navigation
@@ -220,4 +256,14 @@ observer.observe(document.querySelector('title'), { childList: true });
 window.addEventListener('load', () =>
 {
     SetTabTitle();
+    CreateCancelEditingButton();
+});
+
+// Setting up watcher that will add a cancel editing button
+window.navigation.addEventListener("navigate", (event) =>
+{
+    waitForKeyElements(".qa-publish-doc", (element) =>
+    {
+        CreateCancelEditingButton();
+    });
 });

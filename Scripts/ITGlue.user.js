@@ -150,6 +150,39 @@ function CreateCopyTeamsLinkButton_Passwords()
     });
 }
 
+// TODO comment
+function CreateCancelEditingButton()
+{
+    // Only adding this button if we are editing.
+    if (!(window.location.href.includes("version=draft") && !window.location.href.includes("&documentMode=edit")))
+    {
+        return;
+    }
+
+    const existingButton = document.querySelector('#cancelEditButton');
+    if (existingButton !== null)
+    {
+        return;
+    }
+
+
+    const publishButton = document.querySelector(".publish-doc");
+
+    const newButton = document.createElement("button");
+    newButton.type = "button";
+    newButton.textContent = "Cancel Editing";
+    newButton.classList.add("kaseya-ui-button", "button--secondary", "button--regular", "button--auto-width");
+    newButton.setAttribute("id", "cancelEditButton");
+
+    newButton.addEventListener("click", () =>
+    {
+        window.location.href = window.location.href.split("#")[0];
+    }
+    );
+
+    publishButton.parentNode.insertBefore(newButton, publishButton);
+}
+
 // Takes Organization names that are very long and formats them down into acronyms,
 // so that the org name doesn't hide the document title in the tab text.
 function GetFormattedOrgName()
@@ -168,6 +201,7 @@ function GetFormattedOrgName()
         6213647: "FMDT",
         8609516: "GSG",
         5199266: "Ingerman",
+        5199013: "Mack",
         5198977: "Naiman",
         5199276: "PK Law",
         5870388: "SBWD",
@@ -211,6 +245,7 @@ function UpdateLogic()
     SetTabTitle();
     CreateCopyTeamsLinkButton();
     CreateCopyTeamsLinkButton_Passwords();
+    CreateCancelEditingButton();
 }
 
 // Will try to update the title any time that it is changed on page navigation

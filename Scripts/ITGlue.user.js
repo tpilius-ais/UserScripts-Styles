@@ -7,6 +7,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=itglue.com
 // @top-level-await
 // @require      https://cdn.jsdelivr.net/npm/toastify-js
+// @require      https://cdn.jsdelivr.net/gh/CoeJoder/waitForKeyElements.js@master/waitForKeyElements.js
 // @resource     toastifyCSS https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -154,7 +155,8 @@ function CreateCopyTeamsLinkButton_Passwords()
 function CreateCancelEditingButton()
 {
     // Only adding this button if we are editing.
-    if (!(window.location.href.includes("version=draft") && !window.location.href.includes("&documentMode=edit")))
+    console.log(window.location.href);
+    if (!(window.location.href.includes("version=draft") && window.location.href.includes("documentMode=edit")))
     {
         return;
     }
@@ -164,7 +166,6 @@ function CreateCancelEditingButton()
     {
         return;
     }
-
 
     const publishButton = document.querySelector(".publish-doc");
 
@@ -177,8 +178,7 @@ function CreateCancelEditingButton()
     newButton.addEventListener("click", () =>
     {
         window.location.href = window.location.href.split("#")[0];
-    }
-    );
+    });
 
     publishButton.parentNode.insertBefore(newButton, publishButton);
 }
@@ -255,4 +255,14 @@ observer.observe(document.querySelector('title'), { childList: true });
 window.addEventListener('load', () =>
 {
     SetTabTitle();
+    CreateCancelEditingButton();
+});
+
+window.navigation.addEventListener("navigate", (event) =>
+{
+    waitForKeyElements(".qa-publish-doc", (element) =>
+    {
+        // console.log("navigate");
+        CreateCancelEditingButton();
+    });
 });

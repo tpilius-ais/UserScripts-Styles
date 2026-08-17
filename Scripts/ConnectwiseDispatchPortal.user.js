@@ -138,6 +138,12 @@ function MonitorBoardTickets()
 // TODO comment.  Crappy name and should be refactored.
 function ShouldNotify(parsedRows)
 {
+    const notificationsEnabledCheckbox = document.querySelector("#notifications-enabled-checkbox");
+    if (notificationsEnabledCheckbox.checked === false)
+    {
+        return;
+    }
+
     // If there are no rows then why are we notifying?
     if (parsedRows.length === 0)
     {
@@ -192,6 +198,35 @@ async function SendNotification(message)
     }
 }
 
+// TODO style this element.  Comment
+let notificationsCheckboxAdded = false;
+function AddEnableNotificationsCheckbox()
+{
+    if (notificationsCheckboxAdded)
+    {
+        return;
+    }
+
+    // Creating checkbox.  Defaults to notifications enabled when loading the page, that then require the user to disable them if they don't want notifications anymore.
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = "notifications-enabled-checkbox";
+    checkbox.checked = true;
+    checkbox.style.marginLeft = "150px";
+
+
+    const label = document.createElement("label");
+    label.htmlFor = "notifications-enabled-checkbox";
+    label.innerText = "Notifications Enabled";
+
+    // Inserting it after the clear button
+    const clearButton = document.querySelector(".cw-toolbar-clear");
+    clearButton.after(checkbox);
+    checkbox.after(label);
+
+    notificationsCheckboxAdded = true;
+}
+
 // TODO give a better name
 class TableRow
 {
@@ -243,6 +278,7 @@ async function TrySetupGridObserver()
         // Run these once on page load
         UpdateTableRows();
         MonitorBoardTickets();
+        AddEnableNotificationsCheckbox();
 
         // Setting up refresh button clicker.  To make sure that the grid is being updated even when it isn't in focus in its own tab.
         // TODO should probably make the refresh timing configurable, and make this a bit more robust

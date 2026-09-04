@@ -127,7 +127,6 @@ function CreateCopyTeamsLinkButton()
         navigator.clipboard.write([clipboardItem]);
 
         // Showing toast notification to right side of button so user knows it worked.
-        // TODO this pops up and never goes away.
         Toastify({
             text: "Copied!",
             duration: 1000,
@@ -167,7 +166,7 @@ function AddToolbarCustomLinks()
 
     // Empty out the div so we can add whatever we want to it.
     cloned.firstChild.remove();
-    // TODO cipp icon not showing up for adam
+    // TODO CIPP icon doesn't show up in edge
     const html = `<span id="itglue-button" class="custom-toolbar-button">
                     <a href="https://ainfosys.itglue.com/links/connectwise/org/${companyId}" target="_blank">
                         <img src="https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/ITGlue.png"> IT Glue
@@ -185,7 +184,7 @@ function AddToolbarCustomLinks()
                   </span>
                   <span id="cipp-button" class="custom-toolbar-button">
                     <a href="https://cipp.ainfosys.com/?tenantFilter=${emailDomain}" target="_blank">
-                        <img src='https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/CIPP.ico'> CIPP
+                        <img src='https://raw.githubusercontent.com/tpilius-ais/UserScripts-Styles/refs/heads/master/img/CIPP.png'> CIPP
                     </a>
                   </span>`;
     cloned.innerHTML = html;

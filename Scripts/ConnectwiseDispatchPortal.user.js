@@ -10,11 +10,7 @@
 // ==/UserScript==
 
 // TODO document what it does
-// TODO should I just combine everything ConnectWise into one script and then have feature toggles?  Will need to rename script
 // TODO this whole thing needs to be cleaned up in general
-// TODO measure performance and optimize if needed
-// TODO Adam and Aaron might have to delete their existing version of this
-// TODO add a checkbox to toggle desktop notifications
 
 'use strict';
 

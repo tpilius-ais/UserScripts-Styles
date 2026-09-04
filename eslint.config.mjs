@@ -13,11 +13,13 @@ export default defineConfig([
         {
             globals:
             {
+                // TODO once this is an extension probably need to remove these
                 ...globals.browser,
                 unsafeWindow: "readonly",
                 GM_addStyle: "readonly",
                 GM_getResourceText: "readonly",
-                Toastify: "readonly"
+                Toastify: "readonly",
+                waitForKeyElements: "readonly"
             }
         },
         rules:

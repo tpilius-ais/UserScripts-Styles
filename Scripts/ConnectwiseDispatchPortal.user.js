@@ -185,7 +185,10 @@ function ShouldNotify(parsedRows)
     }
 }
 
-//TODO comment
+/**
+ * Sends a desktop notification with the specified message.
+ * @param {string} message
+ */
 async function SendNotification(message)
 {
     if (Notification.permission === 'default')
@@ -198,10 +201,17 @@ async function SendNotification(message)
     }
 }
 
+// TODO consider persisting this setting between page refreshes
 // TODO style this element.  Comment
 let notificationsCheckboxAdded = false;
 function AddEnableNotificationsCheckbox()
 {
+    // We only show notifications on the dispatch portal, so only show this button there.
+    if (!window.location.href.includes("DispatchSchedule"))
+    {
+        return;
+    }
+
     if (notificationsCheckboxAdded)
     {
         return;
@@ -213,11 +223,13 @@ function AddEnableNotificationsCheckbox()
     checkbox.id = "notifications-enabled-checkbox";
     checkbox.checked = true;
     checkbox.style.marginLeft = "150px";
-
+    checkbox.style.marginTop = "5px";
+    checkbox.style.marginRight = "5px";
 
     const label = document.createElement("label");
     label.htmlFor = "notifications-enabled-checkbox";
     label.innerText = "Notifications Enabled";
+    label.title = "Enables/Disables desktop notifications when tickets are added/changed";
 
     // Inserting it after the clear button
     const clearButton = document.querySelector(".cw-toolbar-clear");

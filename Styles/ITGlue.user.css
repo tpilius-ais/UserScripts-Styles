@@ -12,6 +12,18 @@
 @-moz-document domain("ainfosys.itglue.com")
 {
 
+    /* Removes support button at the bottom right hand corner */
+    .btn-support.btn
+    {
+        display: none !important;
+    }
+
+    /* Removes the arbitrary black bar at the bottom of the screen that does nothing but waste vertical space */
+    footer.navbar-default
+    {
+        display: none !important;
+    }
+
     /* Shrinks the right hand sidebar since its a bit too wide by default */
     body.react-app-doc-editor .sidebar
     {
@@ -104,6 +116,8 @@
 
     /* Hides password strength box */
     .row-with-copy:has(.smart-audit__password-strength-info),
+    /* Hides Documentation Health Summary on Home page */
+    .smart-assist-widget-node__documentation-health,
     /* Hides password strength box on client's Home page  */
     .smart-assist-widget-node__password-strength,
     /* Hides AI button that shows up below "Related Items" */

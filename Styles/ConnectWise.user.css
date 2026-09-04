@@ -7,7 +7,6 @@
 ==/UserStyle== */
 
 /* TODO write matching readme documentation */
-/* TODO see if I can colorize the open in maps icon which is next to the address */
 
 /* Global styles */
 @-moz-document url-prefix("https://na.myconnectwise.net/v2025_1")
@@ -86,18 +85,6 @@
         display: none !important;
     }
 
-    /* TODO see if I can fix the spacing on the scheduling widget */
-    /* .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(4),
-    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(5),
-    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table tr.GMDB3DUBCFI td:nth-child(6),
-    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="3"],
-    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="4"],
-    .pod_service_ticket_resource div[__gwtcellbasedwidgetimpldispatchingfocus] table td[cellindex="5"]
-    {
-
-        display: none !important;
-    } */
-
     /* Gives the pod header a color to make the content more visually distinct from the header */
     .mm_podHeader
     {
@@ -172,6 +159,7 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
     .cw_PsaHistoryButton,
     .cw_PsaMoreMenuButton,
     .cw_PsaLinksMenuButton,
+    .mm_stopwatch,
     /* "Share" drop down */
     .mm_toolbarHolder .cw_CwTextButton,
     /*  "Pop Out in New Window" */
@@ -213,10 +201,16 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         }
     }
 
-    /* Colorizes buttons on toolbar */
+    /* Colorize expense button on toolbar */
     .cw_ToolbarButton_Expense
     {
         filter: invert(48%) sepia(79%) saturate(1800%) hue-rotate(86deg) brightness(85%) contrast(125%);
+    }
+
+    /* Colorize map icon next to company's address */
+    tr.pod-element-row:has(.cw_companyViewAddress1) .cw_CwImage svg
+    {
+        fill: #ff9800 !important;
     }
 
     /* Removes ugly VIP banner */
@@ -247,7 +241,6 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
     input[value="MUST CHANGE"],
     div.mm_comboBox:has(input.cw_subType[value=""]),
     div.mm_comboBox:has(input.cw_item[value=""]),
-    /* TODO I think this is just for me */
     .cw_reminderMinutes[value="30 minutes"],
     div.GMDB3DUBGRG.GMDB3DUBGSG.GMDB3DUBKTG:has(img[style*="R0lGODlhEAAQAJECAHBDWvSrvP"])
     {
@@ -273,7 +266,6 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
             width: initial !important;
         }
 
-        /* TODO these class selectors are horrific */
         .GMDB3DUBFJH.mm_portletSpacing tbody tr:first-of-type td:first-of-type > table:first-of-type
         {
             width: 570px !important;
@@ -387,10 +379,30 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         display: none !important;
     }
 
-    /* TODO keep playing around with this Hides the "Customer updated" checkbox   */
-    .TicketNote-customerUpdatedColumn:has(.CwCheckBox-checkbox)
+    /* Resources & Meetings - Shrinks table so that it fits in the smaller left hand column correctly */
+
+    /* Resource */
+    .pod_service_ticket_resource
     {
-        /* background-color: red !important; */
-        /* display: none !important; */
+
+        & td[cellindex="1"],
+        & th:nth-child(2)
+        {
+            width: 100px !important;
+        }
+
+        /* Time and Date */
+        & td[cellindex="2"],
+        & th:nth-child(3)
+        {
+            width: auto !important;
+        }
+
+        /* Hide Where Column */
+        & td[cellindex="3"],
+        & th:nth-child(4)
+        {
+            display: none !important;
+        }
     }
 }

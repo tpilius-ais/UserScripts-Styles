@@ -2,7 +2,7 @@
 @name           IT Glue Tweaks
 @namespace      tpilius-ais
 @author         tpilius-ais
-@version        0.8.0
+@version        0.9.0
 @description    Overhauls the interface design of IT Glue to improve visual clarity and usability.
 ==/UserStyle== */
 
@@ -209,13 +209,14 @@ regexp("^.*(itglue).*(passwords).*")
     /* Colors whole row red when the document has expired */
     tr:has(td span.color-red)
     {
-        background-color: #FCE8E6;
+        background-color: light-dark(#FCE8E6, #42252A) !important;
+        ;
     }
 
     /* Colorizing archived items */
     tr:has(i.fa-archive)
     {
-        background-color: lightblue !important;
+        background-color: light-dark(lightblue, #2e4d5e) !important;
     }
 }
 

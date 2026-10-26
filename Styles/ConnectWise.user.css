@@ -96,6 +96,105 @@
     {
         margin-top: -3px;
     }
+
+    /* Dialog container */
+    .CwDialog-modal
+    {
+        color: light-dark(#0B1220, #E2E8F0) !important;
+        background-color: light-dark(#FFFFFF, #111827) !important;
+        border: 1px solid light-dark(#D9E2EC, #334155) !important;
+        border-radius: 6px !important;
+        box-shadow: 0 8px 24px rgb(0 0 0 / 20%) !important;
+        overflow: hidden;
+    }
+
+    /* Dialog content wrapper */
+    .CwDialog-wrap
+    {
+        background-color: light-dark(#FFFFFF, #111827) !important;
+    }
+
+    /* Dialog header */
+    .CwDialog-header
+    {
+        padding: 16px 20px 10px !important;
+        color: light-dark(#0B1220, #F1F5F9) !important;
+        font-size: 17px !important;
+        font-weight: 600 !important;
+        border-bottom: 1px solid light-dark(#E2E8F0, #293548);
+    }
+
+    /* Dialog message */
+    .CwDialog-content
+    {
+        padding: 16px 20px !important;
+        color: light-dark(#475569, #CBD5E1) !important;
+        font-size: 14px !important;
+        line-height: 1.6;
+    }
+
+    /* Button container */
+    .CwDialog-buttons
+    {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 8px 16px 14px !important;
+        background-color: light-dark(#F8FAFC, #0F172A) !important;
+        border-top: 1px solid light-dark(#E2E8F0, #293548);
+    }
+
+    /* Base button styling */
+    .CwDialog-buttons .CwButton-wrap
+    {
+        border: 1px solid light-dark(#CBD5E1, #475569) !important;
+        border-radius: 6px !important;
+        background: transparent !important;
+        cursor: pointer;
+        transition: background-color 120ms ease, border-color 120ms ease;
+    }
+
+    /* Button text */
+    .CwDialog-buttons .CwButton-innerLightActive
+    {
+        color: light-dark(#334155, #CBD5E1) !important;
+        background: transparent !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+    }
+
+    /* Button hover */
+    .CwDialog-buttons .CwButton-wrap:hover
+    {
+        background-color: light-dark(#E2E8F0, #293548) !important;
+        border-color: #06B6D4 !important;
+    }
+
+    /* Confirm button */
+    .CwDialog-buttons [data-cwid="btn_ok"]
+    {
+        background-color: #06B6D4 !important;
+        border-color: #06B6D4 !important;
+    }
+
+    /* Confirm button text */
+    .CwDialog-buttons [data-cwid="btn_ok"] .CwButton-innerLightActive
+    {
+        color: #0B1220 !important;
+    }
+
+    /* Confirm button hover */
+    .CwDialog-buttons [data-cwid="btn_ok"]:hover
+    {
+        background-color: #0891B2 !important;
+        border-color: #0891B2 !important;
+    }
+
+    /* Cancel button hover */
+    .CwDialog-buttons [data-cwid="btn_cancel"]:hover
+    {
+        border-color: light-dark(#94A3B8, #64748B) !important;
+    }
 }
 
 /* Dispatch portal */
@@ -363,6 +462,12 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
     .cw_impact,
     /* Hides the "Known Issue Link" field */
     tr.pod-element-row:has(div.cw_Known_Issue_Link),
+    tr.pod-element-row:has(div.cw_SLA),
+    tr.pod-element-row:has(div.cw_Estimated_Start_Date),
+    tr.pod-element-row:has(div.cw_Predecessor),
+    tr.pod-element-row:has(div.cw_dueDate),
+    tr.pod-element-row:has(div.cw_Duration),
+    tr.pod-element-row:has(div.cw_Impact\/Urgency),
     tr.pod-element-row:has(div[title="Agreement"])
     {
         display: none !important;

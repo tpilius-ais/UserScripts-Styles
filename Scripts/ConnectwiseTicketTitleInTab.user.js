@@ -142,6 +142,7 @@ function CreateCopyTeamsLinkButton()
     ticketTitleElement.appendChild(copyButton);
 }
 
+// TODO need to add an override for rig because they only ever send their stuff from retirementandinvestment.com instead of their actual domain retinvgrp.com
 let customLinksAdded = false;
 function AddToolbarCustomLinks()
 {

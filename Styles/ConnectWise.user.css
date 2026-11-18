@@ -163,6 +163,12 @@
         font-weight: 600 !important;
     }
 
+    /* Increases button width */
+    .CwDialog-modal .CwButton-innerLightActive
+    {
+        min-width: 50px !important;
+    }
+
     /* Button hover */
     .CwDialog-buttons .CwButton-wrap:hover
     {
@@ -335,6 +341,7 @@ regexp("(^https://na.myconnectwise.net/v2025_1).*(routeTo=ServiceFV).*")
         background-color: lightcoral;
     }
 
+    /* Scheduled tickets get colored yellow */
     input[value="Scheduled"]
     {
         background-color: lightyellow;

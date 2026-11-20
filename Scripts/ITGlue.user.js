@@ -40,7 +40,7 @@ function SetTabTitle()
 // This link will be formatted so that the display text is of the format "[Client] - Document Title", while still linking to the correct page.
 function CreateCopyTeamsLinkButton()
 {
-    // This is only necessary on document pages.
+    // Only display this button on a document page,  and don't display it if we are editing the doc.
     if (!window.location.href.includes("docs"))
     {
         return;
@@ -53,11 +53,18 @@ function CreateCopyTeamsLinkButton()
         return;
     }
 
-    // Remove the old button and readd it.  This is so that it will always be to the right of the edit button.
+    // Remove the old button and re-add it.  This is so that it will always be to the right of the edit button.
+    // TODO this could probably use something like waitForKeyElement()
     const existingButton = pageHeaderContainer.querySelector('button.teams-button');
     if (existingButton !== null)
     {
         existingButton.remove();
+    }
+
+    // Prevents this button from being added if we are editing the doc.
+    if (!window.location.href.includes("version=published"))
+    {
+        return;
     }
 
     // Create the button
@@ -154,14 +161,16 @@ function CreateCopyTeamsLinkButton_Passwords()
 // TODO comment
 function CreateCancelEditingButton()
 {
-    // Only adding this button if we are editing.
-    if (!(window.location.href.includes("version=draft") && window.location.href.includes("documentMode=edit")))
-    {
-        return;
-    }
-
+    // Prevents the button from being added more than once,  and cleans up any cancel button that might be remaining after saving the doc.
+    // This is necessary due to the way that ITG handles page navigation.
     const existingButton = document.querySelector('#cancelEditButton');
     if (existingButton !== null)
+    {
+        existingButton.remove();
+    }
+
+    // Only adding this button if we are editing a doc.
+    if (!(window.location.href.includes("version=draft") && window.location.href.includes("documentMode=edit")))
     {
         return;
     }
@@ -250,21 +259,16 @@ function UpdateLogic()
     CreateCancelEditingButton();
 }
 
-// Will try to update the title any time that it is changed on page navigation
+// Will try to update the title any time that it is changed due to page navigation.
 const observer = new MutationObserver(UpdateLogic);
 observer.observe(document.querySelector('title'), { childList: true });
 
-window.addEventListener('load', () =>
-{
-    SetTabTitle();
-    CreateCancelEditingButton();
-});
-
-// Setting up watcher that will add a cancel editing button
-window.navigation.addEventListener("navigate", (event) =>
-{
-    waitForKeyElements(".qa-publish-doc", (element) =>
-    {
-        CreateCancelEditingButton();
-    });
-});
+// TODO Play around with this to see if it makes things like adding the teams button or edit button cleaner.
+// window.navigation.addEventListener("navigate", (event) =>
+// {
+//     console.log(`[script] ${event.navigationType}`);
+//     waitForKeyElements(".qa-publish-doc", (element) =>
+//     {
+//         CreateCancelEditingButton();
+//     });
+// });
